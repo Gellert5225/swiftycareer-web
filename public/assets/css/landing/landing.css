@@ -1,0 +1,150 @@
+#landing-wrapper {
+    background-color:rgb(42, 47, 63);
+}
+
+#mission-statement {
+    background-color:rgb(42, 47, 63);
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    flex-direction: column;
+}
+
+#mission-statement h1 {
+    flex: 0 0 120;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.search-bar {
+    height: 70px;
+    position: relative;
+    padding-left: 10px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    width: 50%;
+    margin-top: 50px;
+}
+
+.vl {
+    border-left: 1px solid rgb(73, 80, 87);
+    height: 30px;
+}
+
+#search-form {
+    background-color: white;
+    border-radius: 30px;
+}
+
+.landing-search {
+    vertical-align: middle;
+    margin: 0px;
+    padding-left: 10px;
+}
+
+.landing-search-location {
+    padding-left: 0px;
+}
+
+.search-input {
+    letter-spacing: 0.8px;
+    vertical-align: middle;
+    border: none;
+    border-color: rgba(145, 154, 172, 0);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    vertical-align: middle;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 500;
+    font-size: 17px;
+    background-color: rgba(62, 67, 83, 0);
+    color: rgb(73, 80, 87);
+    margin-bottom: 0px;
+}
+
+.search-input:focus {
+    background-color: rgba(62, 67, 83, 0);
+    color: rgb(73, 80, 87);
+    caret-color: black;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.search-btn {
+    height: 50px;
+    width: 100%;
+    border-radius: 30px;
+    border-width: 0px;
+    text-align: center;
+    margin: auto;
+    float: right;
+}
+
+.search-btn-wrapper {
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+@media (max-width:515px) {
+    #mission-statement h1 {
+        font-size:x-large;
+    }
+    .landing-search {
+        padding-left: 15px;
+    }
+}
+
+@media (max-width:991px) {
+    .vl {
+        display: none;
+    }
+
+    .landing-search-location {
+        padding-left: 15px;
+    }
+
+    .search-btn-wrapper {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .landing-search {
+        padding-left: 15px;
+    }
+
+    #search-form {
+        padding: 10px;
+    }
+}
+
+@media (max-width:414px) {
+    .search-bar {
+        width: 80%;
+        height: 200px;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+
+    .search-btn-wrapper {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .landing-search {
+        padding-left: 15px;
+    }
+
+    #search-form {
+        padding: 10px;
+    }
+}
+
+@media (max-width:1200px) {
+    .search-bar {
+        width: auto;
+    }
+}

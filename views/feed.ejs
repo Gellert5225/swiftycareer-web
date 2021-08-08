@@ -1,0 +1,67 @@
+<%- include ("./partials/header.ejs") %>
+<%- include ("./partials/navbar_main.ejs") %>
+
+<div id="feed-wrapper" class="main-wrapper">
+  <div id="currentUser" data-currentUser='<%= JSON.stringify(currentUser) %>' style="display: none;"></div>
+  <div class="row">
+    <div id="feed-left-col">
+    
+    </div>
+    <div id="feed-mid-col">
+      <div id="416671274">
+        <script type="text/javascript">
+            try {
+                window._mNHandle.queue.push(function (){
+                    window._mNDetails.loadTag("416671274", "300x250", "416671274");
+                });
+            }
+            catch (error) {}
+        </script>
+      </div>
+      <div class="modal fade" id="postFeedModal" tabindex="-1" data-backdrop="true" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="loginLabel">Create a post</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div id="postFeedEditor">
+              </div>
+              <output id="image-preview">
+              </output>
+              <hr class="feed-card-divider">
+              <div class="modal-footer justify-content-between">
+                <div style="float: left;">
+                  <label for="image-selector" class="custom-file-upload">
+                    <img id="image-selector-logo" src="../../public/assets/images/addImage.png">
+                  </label>
+                  <input id="image-selector" type="file" accept="image/*"/>
+                  <!-- <label for="document-selector" class="custom-file-upload">
+                    <img id="image-selector-logo" src="../../public/assets/images/addDocument.png">
+                  </label>
+                  <input id="document-selector" type="file" accept=".doc, .docx, .txt, .pdf"/> -->
+                </div>
+                <button type="button" class="btn btn-primary" id="postFeedButton" onclick="postFeed(event)">Post</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="postFeedWrapper">
+        <img id="postFeed-profileImg" src="<%= currentUser.get('profilePicture').url() %>">
+        <div id="postFeedBox">What's on your mind?</div>
+      </div>
+    </div>
+    <div id="feed-right-col">
+    </div>
+  </div>
+</div>
+
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<script src="../public/assets/js/feed.js"></script> 
+
+<%- include ("./partials/footer.ejs") %>

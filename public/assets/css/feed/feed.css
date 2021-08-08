@@ -1,0 +1,446 @@
+#feed-left-col {
+    width: 20%;
+    height: 50px;
+    background-color: thistle;
+}
+
+#feed-mid-col {
+    width: 52%;
+    overflow: hidden;
+}
+
+#feed-right-col {
+    width: 28%;
+    height: 100px;
+    background-color: turquoise;
+}
+
+#postFeedWrapper {
+    background-color: rgb(42, 47, 63);
+    border-radius: 10px;
+    margin: 0;
+    margin-bottom: 10px;
+    padding: 15px 15px;
+    height: 90px;
+}
+
+#postFeed-profileImg {
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    float: left;
+}
+
+#postFeedBox {
+    border: 1px solid rgb(145, 154, 172);
+    border-radius: 20px;
+    height: 40px;
+    line-height: 40px;
+    overflow: hidden;
+    vertical-align: middle;
+    padding: 0 20px;
+    color: rgb(145, 154, 172);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 70px;
+    width: auto;
+    cursor: pointer;
+}
+
+#postFeedBox:hover {
+    background-color: rgb(38, 43, 59);
+}
+
+#postFeedEditor {
+    min-height: 200px;
+    height: auto;
+    border: none !important;
+    scrollbar-width: auto;
+    scrollbar-color: rgb(145, 154, 172) rgba(0,0,0,0);
+    overflow: auto;
+    max-height: 600px;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 0.6px;
+}
+
+.ql-editor.ql-blank::before {
+    color: lightgray;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: 0.6px;
+}
+
+.ql-toolbar {
+    border: none !important;
+}
+
+.ql-toolbar .ql-stroke {
+    fill: none;
+    stroke: #fff;
+}
+
+.ql-toolbar .ql-fill {
+    fill: #fff;
+    stroke: none;
+}
+
+.ql-toolbar .ql-picker {
+    color: #fff;
+}
+
+.thumbnail{
+    height: 70px;
+    width: 70px;
+    object-fit: cover;
+}
+
+.thumbnailContainer {
+    position: relative;
+    height: 80px;
+    width: 70px;
+    margin: 10px; 
+    display: inline-block;
+}
+
+#delete-image {
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+}
+
+#image-preview {
+    display: inline;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+#image-selector-logo {
+    width: 40px;
+    height: 40px;
+}
+
+.feed-card {
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: rgb(42, 47, 63);
+}
+
+.feed-card-body {
+    padding: 12px;
+    position: relative;
+}
+
+#feed-card-profileImg {
+    border-radius: 40px;
+    float: left; 
+    width: 45px; 
+    height: 45px;
+    margin-right: 10px;
+    display: block;
+    margin-top: 1px;
+}
+
+.feed-card-username {
+    padding: 0px;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    color: white;
+    letter-spacing: 0.7px;
+}
+
+.feed-card-authorPosition {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 12px;
+    color: rgb(145, 154, 172);
+    letter-spacing: 0.5px;
+}
+
+#feed-cardTime {
+    float: right;
+}
+
+.feed-moreButton {
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+}
+
+.feed-moreButton img {
+    margin-bottom: 3px;
+}
+
+.feed-timeStamp {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 11px;
+    color: rgb(145, 154, 172);
+    letter-spacing: 0.5px;
+    margin-left: 55px;
+}
+
+.feed-cardDropdownMenu {
+    padding: 5px 0px;
+    background-color: rgb(42, 47, 63);
+    border: none;
+    -webkit-box-shadow: 0px 0px 5px 1px rgb(22, 27, 43); 
+    -moz-box-shadow:    0px 0px 5px 1px rgb(22, 27, 43);
+    box-shadow:         0px 0px 5px 1px rgb(22, 27, 43);
+}
+
+.feed-cardDropdownItem {
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: white !important;
+    letter-spacing: 0.5px;
+}
+
+.feed-cardDropdownItem:hover {
+    background-color: rgb(32, 37, 53) !important;
+}
+
+.feed-cardTextView div {
+    padding: 10px 0px;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    letter-spacing: 0.6px;
+}
+
+.carousel-indicators button {
+    width: 10px !important;
+    height: 10px !important;
+    border: none !important;
+    border-radius: 100%;
+    box-shadow: 0px 0px 2px 2px rgba(0, 0, 0, 0.5);
+}
+  
+.carousel-control-next-icon {
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 1));
+}
+
+.carousel-control-prev-icon {
+    filter: drop-shadow(0px 0px 3px rgba(0, 0, 0, 1));
+}
+
+.feed-card-divider {
+    margin: 0;
+    color: white;
+}
+
+.commentSection {
+    padding: 0px 12px;
+    display: none;
+}
+
+#postCommentWrapper {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+#comment-profileImg {
+    border-radius: 30px;
+    float: left; 
+    width: 35px; 
+    height: 35px;
+    margin-right: 10px;
+    display: block;
+    margin-top: 1px;
+}
+
+.commentTextForm {
+    margin-left: 40px;
+    border: none;
+}
+
+.commentTextArea {
+    padding-top: 6px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 98%;
+    height: 35px;
+    resize: none;
+    overflow: hidden;
+    border: 1px solid rgb(145, 154, 172);
+    border-radius: 15px;
+    background-color: rgb(42, 47, 63);
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: white;
+    letter-spacing: 0.5px;
+}
+
+.commentTextArea:focus {
+    outline: none;
+}
+
+.circular-loader {
+    border: 2px solid rgba(145, 154, 172, 0.5);;
+    border-top: 2px solid rgb(42, 47, 63);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 2s linear infinite;
+    margin: 10px auto;
+}
+
+@-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.comment-moreButton {
+    margin-top: -10px;
+}
+
+.comment-card {
+    background-color: rgb(62, 67, 83);
+}
+
+.comment-card-body {
+    padding: 10px;
+}
+
+.comment-card-username {
+    font-weight: 700;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.comment-card-authorPosition {
+    font-size: 11px;
+}
+
+.comment-cardTextView div {
+    padding: 0;
+}
+
+.comment-cardTextView div p {
+    font-size: 12px;
+}
+
+.carousel-inner > .item {
+    height: 400px;
+}
+
+.utility-col-wrapper {
+    margin: auto;
+    width: 100px;
+    overflow: hidden;
+    padding-top: 0px;
+    padding-bottom: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+}
+
+.feed-utility-img {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 2px;
+}
+
+.numberOf {
+    width: 50px;
+    float: right;
+    color: white;
+    margin: auto;
+    text-align: left;
+    padding-top: 2px;
+
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    color: rgb(145, 154, 172);
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 1000px) {
+    #feed-left-col {
+        display: none;
+    }
+
+    #feed-right-col {
+        display: none;
+    }
+
+    #feed-wrapper {
+        max-width: auto;
+        min-width: auto;
+    }
+    
+    #feed-mid-col {
+        margin: 0 auto;
+        width: 60%;
+    }
+}
+
+@media (max-width: 900px) {
+    #feed-mid-col {
+        margin: 0 auto;
+        width: 70%;
+    }
+}
+
+@media (max-width: 700px) {
+    #feed-mid-col {
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .feed-card {
+        padding: 0px 0px;
+        border-radius: 0px;
+        margin-bottom: 10px;
+    }
+
+    #postFeedWrapper {
+        border-radius: 0px;
+    }
+}
+
+@media only screen and (max-width : 600px) {
+    #feed-wrapper {
+        padding-top: 60px;
+    }
+
+    .comment-moreButton {
+        padding: 0px 5px;
+    }
+}
+
+@media (max-height: 1000px) {
+    #postFeedEditor {
+        max-height: 400px;
+    }
+}

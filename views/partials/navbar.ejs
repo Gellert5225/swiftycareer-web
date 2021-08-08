@@ -1,0 +1,72 @@
+<div class="navbar-wrapper">
+  <div class="custom-navbar">
+    <a class="navbar-brand" href="/" style="top: 50%;">
+      <img src="../public/assets/images/uniplus.png" width="60" height="60" class="d-inline-block align-middle" alt="" style="-webkit-font-smoothing: antialiased;">
+      <span class="navbar-customBrand">Swifty Career</span>
+    </a>
+    <ul class="navbar-ul" id="loginul">
+      <li class="navbar-li"><a style="margin-right: 10px;" data-bs-toggle="modal" data-bs-target="#loginModal" href="#loginModal">Login</a></li>
+      <li class="navbar-li"><a href="/signup" data-bs-toggle="modal" data-bs-target="#signupModal">Sign Up</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal fade" id="loginModal" tabindex="-1" data-backdrop="true" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="loginLabel">Login</h5>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+
+        </div>
+        <form id="loginform" onsubmit="signIn(event)">
+          <div class="form-group">
+            <input type="text" class="form-control form-control-login" name="username" id="username" placeholder="Username">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control form-control-login" name="password" id="password" placeholder="Password">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary login-close" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary login-btn">Login</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="signupLabel">Sign Up</h5>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          
+        </div>
+        <form id="signupform" onsubmit="signUp(event)">
+          <div class="form-group">
+            <input type="text" class="form-control form-control-login" name="username" id="username" placeholder="Username">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control form-control-login" name="email" id="email" placeholder="Email">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control form-control-login" name="password" id="password" placeholder="Password">
+          </div>
+          <div class="form-group">
+            <input type="password" class="form-control form-control-login" name="password-confirm" id="password-confirm" placeholder="Confirm Password">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary login-close" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary login-btn">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

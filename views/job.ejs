@@ -1,0 +1,92 @@
+<%- include ("./partials/header.ejs") %>
+<%- include ("./partials/navbar_main.ejs") %>
+
+<div id="job-wrapper" class="main-wrapper">
+  <div id="search_bar">
+    <input type="text" id="job-title-form" class="form-control job-search-form-control" placeholder="Search by title or company"> 
+    <input type="text" id="job-location-form" class="form-control job-search-form-control" placeholder="City, state or zipcode"> 
+    <button class="btn btn-primary">Search</button> 
+  </div>
+  <div id="search_bar_mobile" style="display: none;" data-bs-target="#search-modal" data-bs-toggle="modal">
+    <img src="../public/assets/images/search.png" alt="">
+    <p>Search for jobs</p>
+  </div>
+  <div id="filter-wrapper" style="display: none;" data-bs-target="#filter-modal" data-bs-toggle="modal">
+    <img src="../public/assets/images/filter.png" alt="">
+    <p>Filters</p>
+  </div>
+  <div class="modal fade" id="filter-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-body">
+          <%- include ("./partials/filter.ejs") %>
+          <div style="display: flex;">
+            <button type="button" class="btn btn-primary" id="job-search-filter-apply-btn" data-bs-dismiss="modal">Apply Filters</button>
+            <button type="button" class="btn btn-primary" id="job-search-filter-cancel-btn" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="search-modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div id="search_bar_modal">
+            <input type="text" id="job-title-form-modal" class="form-control job-search-form-control job-search-form-control-modal" placeholder="Search by title or company"> 
+            <hr class="search_bar-modal-divider">
+            <input type="text" id="job-location-form-modal" class="form-control job-search-form-control job-search-form-control-modal" placeholder="City, state or zipcode"> 
+            <button class="btn btn-primary">Search</button> 
+            <button type="button" class="btn btn-secondary" id="search_bar_modal_cancel" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div id="job-left-col">
+      <div class="job-filter-header" id="job-filter-header-main">
+        <p class="job-filter-header-title job-filter-header-title-main">FILTERS</p>
+        <p id="job-filter-header-clear" class="job-filter-clear">Clear all filteres</p>
+      </div>
+      <hr class="job-filter-divider">
+      <%- include ("./partials/filter.ejs") %>
+      <div style="display: flex;">
+        <button type="button" class="btn btn-primary" id="job-search-filter-apply-btn">Apply Filters</button>
+        <button type="button" class="btn btn-primary" id="job-search-filter-cancel-btn">Cancel</button>
+      </div>
+    </div>
+    
+    <div id="job-mid-col">
+      <div class="job-mid-col-title">
+        <p>Recommonded For You</p>
+      </div>
+      <% for( let index = 0; index < 5; index++ ) { %>
+        <div class="job-search-card">
+          <div id="job-search-card-title-wrapper">
+            <p id="job-search-card-title">Software Engineer</p>
+            <p id="job-search-card-time">13 Hours ago</p>
+          </div>
+          <div id="job-search-card-location-wrapper">
+            <p id="job-search-card-company">UCR</p>
+            <img src="../public/assets/images/marker.png" alt="">
+            <p id="job-search-card-location">Riverside, CA</p>
+          </div>
+          <div id="job-search-card-short-description">
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+          </div>
+          <hr class="job-filter-divider">
+        </div>
+      <% } %>
+    </div>
+    <div id="job-right-col">
+     
+    </div>
+  </div>
+</div>
+
+<%- include ("./partials/footer.ejs") %>

@@ -1,0 +1,103 @@
+.form-control-login {
+    height: 40px;
+    letter-spacing: 0.8px;
+    vertical-align: middle;
+    border: none;
+    border-color: rgba(145, 154, 172, 0);
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+    vertical-align: middle;
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 300;
+    font-size: 17px;
+    padding: 0.5rem 0.5rem;
+    background-color: rgb(62, 67, 83);
+    color: white;
+    padding: 2px 15px;
+}
+
+.form-control-login:focus {
+    background-color: rgb(62, 67, 83);
+    color: white;
+    border-color: inherit;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+}
+
+.form-group {
+    padding: 5px 0px;
+}
+
+.modal-content {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.modal-header {
+    -webkit-border-top-left-radius: 10px !important;
+    -moz-border-top-left-radius: 10px !important;
+    -webkit-border-top-right-radius: 10px !important;
+    -moz-border-top-right-radius: 10px !important;
+    border-top-left-radius: 10px !important; 
+    border-top-right-radius: 10px !important; 
+    background-color: rgb(42, 47, 63);
+    border-bottom-color: rgb(145, 154, 172);
+}
+
+.modal-body {
+    -webkit-border-bottom-left-radius: 10px !important;
+    -moz-border-top-bottom-radius: 10px !important;
+    -webkit-border-bottom-right-radius: 10px !important;
+    -moz-border-bottom-right-radius: 10px !important;
+    border-bottom-left-radius: 10px !important; 
+    border-bottom-right-radius: 10px !important; 
+    background-color: rgb(42, 47, 63);
+}
+
+.modal-footer {
+    padding: 0;
+    border-top-color: rgba(145, 154, 172, 0);
+}
+
+.modal-header button {
+    color: white;
+}
+
+.modal-title {
+    color: white;
+}
+
+.close {
+    text-shadow: none;
+}
+
+.search-btn {
+    height: 30px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+    text-align: center;
+    padding: 5px 30px;
+    border: none;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.login-close {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.login-close:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.login-btn {
+    background-color: rgb(53, 111, 177);
+}
+
+.login-btn:hover {
+    cursor: pointer;
+}

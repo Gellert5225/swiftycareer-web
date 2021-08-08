@@ -1,0 +1,31 @@
+<%- include ("./partials/header.ejs") %>
+<%- include ("./partials/navbar.ejs") %>
+
+<div id="landing-wrapper">
+    <div id="mission-statement">
+        <h1>Land your first campus job</h1>
+        <div class="search-bar">
+            <form action="#">
+                <div class="row" id="search-form">
+                    <div class="col-lg-6 d-flex align-items-center form-group landing-search">
+                        <input class="form-control border-0 shadow-0 search-input landing-form-control" type="text" name="Search" placeholder="What's your dream job">
+                        <div class="vl"></div>
+                    </div>
+                    <div class="col-lg-4 d-flex align-items-center form-group landing-search landing-search-location">
+                        <input class="form-control border-0 shadow-0 search-input landing-form-control" type="text" name="Location" placeholder="Location">
+                    </div>
+                    <div class="col-lg-2 search-btn-wrapper">
+                        <button class="btn btn-primary search-btn" type="submit">Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div id="lower">
+        <H1>Lower</H1>
+    </div>
+</div>
+
+<script src="../public/assets/js/landing.js"></script>
+
+<%- include ("./partials/footer.ejs") %>

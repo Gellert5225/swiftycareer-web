@@ -1,0 +1,77 @@
+<div class="navbar-wrapper navbar-wrapper-main">
+  <div class="custom-navbar custom-navbar-main">
+    <a class="navbar-brand navbar-brand-main" href="/" style="top: 50%;">
+      <img src="../public/assets/images/uniplus.png" width="60" height="60" class="d-inline-block align-middle" alt="" style="-webkit-font-smoothing: antialiased;">
+    </a>
+    <ul class="navbar-ul-main">
+      <li class="navbar-li navbar-li-main" data-value1="home.png" data-value2="home-selected.png">
+        <a href="/feed">
+          <img src="../../public/assets/images/home.png" id="itemImg">
+        </a>
+      </li>
+      <li class="navbar-li navbar-li-main" data-value1="job.png" data-value2="job-selected.png">
+        <a href="/jobs">
+          <img src="../../public/assets/images/job.png" id="itemImg">
+        </a>
+      </li>
+      <li class="navbar-li navbar-li-main" data-value1="friend.png" data-value2="friend-selected.png">
+        <a href="/connections">
+          <img src="../../public/assets/images/friend.png" id="itemImg">
+        </a>
+      </li>
+      <li class="navbar-li navbar-li-main" data-value1="alert.png" data-value2="alert-selected.png">
+        <a href="/notifications">
+          <img src="../../public/assets/images/alert.png" id="itemImg">
+        </a>
+      </li>
+      <li class="navbar-li navbar-li-main navbar-profilepic">
+        <div class="btn-group">
+          <button id="profile-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="10,10">
+            <% if (currentUser.get('profilePicture')) { %>
+            <img src="<%= currentUser.get('profilePicture').url()%>" alt="../../public/assets/images/alert.png" id="itemImg">
+            <% } else { %>
+            <img src="../../public/assets/images/friend.png" alt="../../public/assets/images/alert.png" id="itemImg">
+            <% } %>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-lg-end navbar-profileDropdownMenu">
+            <li><a class="dropdown-item navbar-profileDropdownItem" id="navbar-profileDropdownUsername" href="#">
+              <%= currentUser.get('display_name') %>
+            </a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item navbar-profileDropdownItem" href="#">Activity</a></li>
+            <li><hr class="dropdown-divider"></li>
+            <li><a class="dropdown-item navbar-profileDropdownItem" href="#">Settings</a></li>
+            <li>
+              <form id="myForm" method="POST" action="/logout">
+                <input type="hidden" name="name" value="value" /> 
+                <a class="dropdown-item navbar-profileDropdownItem" href="/logout" id="logout_link">Log Out</a>
+              </form>
+            </li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  document.getElementsByClassName("navbar-li-main")[0].click()
+  function switchTab(evt, imageName, selectedImageName) {
+    var i, tablinks;
+    tablinks = document.getElementsByClassName("navbar-li-main");
+    
+    var a = evt.currentTarget;
+    var img = a.getElementsByTagName("img");
+    img.src = "../../public/assets/images/" + selectedImageName
+  }
+  
+  jQuery("#logout_link").click(function(e){
+      window.location = $(this).attr('href');
+      e.preventDefault();
+    });
+  
+  $(function() {
+    $('.navbar-li-main a[href^="/' + location.pathname.split("/")[1] + '"]').parent().addClass('active');
+    $('.navbar-li-main.active').find("img").attr("src", "../../public/assets/images/" + $('.navbar-li-main.active').data("value2"));
+  });
+</script>

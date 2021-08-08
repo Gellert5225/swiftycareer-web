@@ -1,0 +1,32 @@
+<script>
+    setTimeout(function() {
+        $('#loginModal').addClass("fade");
+        $('#signupModal').addClass("fade");
+      }, 1000);
+  </script>
+  <script>
+    $(".dropdown-menu a").click(function(){
+      $(this).parents(".dropdown").find('.btn').html($(this).text() + ' <span class="caret"></span>');
+      $(this).parents(".dropdown").find('.btn').val($(this).data('value'));
+    });
+  </script>
+
+  <script>
+    $(".sort-questions ul li").hover(function () {
+      $(this).addClass("mouseOverli");
+    },
+    function () {
+      $(this).removeClass("mouseOverli");
+    });
+</script>
+
+  <script>
+    $('.dropdown-item').click(function(){
+      var _url = window.location.href;
+      _url += (_url.split('?')[1] ? '&':'?') + ('number=' + $(this).text());
+      this.href = _url;
+    });
+  </script>
+  
+</body>
+</html>
