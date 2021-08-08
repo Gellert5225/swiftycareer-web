@@ -1,95 +1,60 @@
-const db    = require('../model/index');
-const User  = db.user;
-const Role  = db.role;
+const db   = require('../model/index');
+const User = db.database.collection('User');
+const Role = db.database.collection('Role');
 
-var jwt     = require('jsonwebtoken');
-var bcrypt  = require('bcryptjs');
+var jwt    = require('jsonwebtoken');
+var bcrypt = require('bcryptjs');
 
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
-const hash_pw = (password, salt) => {
+exports.signUp = (user) => {
     return new Promise((resolve, reject) => {
-        bcrypt.hash(password, salt).then((result) => {
-            resolve(result);
-        }, error => {
-            reject(error);
-        });
-    });
-}
+        (async () => {
+            try {
+                user.hashed_password = await bcrypt.hash(user.password, 8);
+                delete user.password;
 
-exports.signUp = ({ username, email, password, roles }) => {
-    return new Promise((resolve, reject) => {
-        hash_pw(password, 8).then((hashed_pw) => {
-            const user = new User({
-                username: username,
-                email: email,
-                hashed_password: hashed_pw
-            });
+                if (user.roles) {
+                    let roles_query_results = await Role.find({"name" : {"$in" : user.roles}}).toArray();
+                    user.roles = roles_query_results;
+                } else {
+                    let user_role = await Role.findOne({ name: 'user' });
+                    user.roles = [user_role._id];
+                }
 
-            user.save((err, user) => {
-                if (err) { reject({ status: 500, error: err }); return; }
-                
-                var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                let insert_user_response = await User.insertOne(user);
+                const result_user = insert_user_response.ops[0];
+                var token = jwt.sign({ id: result_user._id }, process.env.JWT_SECRET, {
                     expiresIn: 30
                 });
-
-                if (roles) {
-                    Role.find({ name: { $in: roles } }, (err, roles) => {
-                        if (err) { reject({ status: 500, error: err }); return; }
-                        user.roles = roles.map(role => role._id);
-                        user.save(err => {
-                            if (err) { reject({ status: 500, error: err }); return; }
-                            resolve({ 
-                                status: 200, 
-                                user: { 
-                                    id: user._id, 
-                                    username: user.username, 
-                                    roles: user.roles, 
-                                    accessToken: token 
-                                } 
-                            });
-                        });
-                    });
-                } else {
-                    Role.findOne({ name: 'user' }, (err, role) => {
-                        if (err) { reject({ status: 500, error: err }); return; }
-                        user.roles = [role._id];
-                        user.save(err => {
-                            if (err) { reject({ status: 500, error: err }); return }
-                            resolve({ 
-                                status: 200, 
-                                user: { 
-                                    id: user._id, 
-                                    username: user.username, 
-                                    roles: user.roles, 
-                                    accessToken: token 
-                                } 
-                            });
-                        });
-                    });
-                }
-            });
-        }, error => {
-            reject({ status: 500, error: error });
-        });
+                resolve({ 
+                    status: 200, 
+                    user: { 
+                        id: result_user._id, 
+                        username: result_user.username, 
+                        roles: result_user.roles, 
+                        accessToken: token 
+                    } 
+                });
+            } catch (error) {
+                reject({ status: 500, error: error });
+            }
+        })();
     });
 }
 
 exports.signIn = ({ username, password }) => {
     return new Promise((resolve, reject) => {
-        User.findOne({ username: username }).populate('roles', '-__V').exec((err, user) => {
-            if (err) { reject({ status: 500, error: err }); return; }
-    
-            if (!user) { reject({ status: 404, error: 'Username does not exist!' }); return; }
+        (async () => {
+            try {
+                let user = await User.findOne({ username: username });
+                if (!user) { reject({ status: 404, error: 'Username does not exist!' }); return; }
 
-            bcrypt.compare(password, user.hashed_password, (err, res) => {
-                if (err) { reject({ status: 500, error: err }); return; }
-                if (!res) { reject({ status: 401, error: 'Invalid Password' }); return; }
-                
+                let bcrypt_res = await bcrypt.compare(password, user.hashed_password);
+                if (!bcrypt_res) { reject({ status: 401, error: 'Invalid Password' }); return; }
                 var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
                     expiresIn: 30
                 });
-    
                 resolve({ 
                     status: 200, 
                     user: { 
@@ -99,7 +64,9 @@ exports.signIn = ({ username, password }) => {
                         accessToken: token 
                     } 
                 });
-            });
-        });
+            } catch (error) {
+                reject({ status: 500, error: error });
+            }
+        })();
     });
 }

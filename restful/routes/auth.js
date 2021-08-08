@@ -16,7 +16,7 @@ module.exports = function(app) {
             roles: req.body.roles
         }).then((response) => {
             res.cookie('user_jwt', response['user']['accessToken'], {secure: false, httpOnly: true});
-            res.send(response);
+            res.json(response);
         }, error => {
             res.send(error);
         });

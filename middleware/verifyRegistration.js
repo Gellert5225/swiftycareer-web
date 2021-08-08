@@ -1,16 +1,11 @@
 const db = require('../model/index');
 const ROLES = db.ROLES;
-const User = db.user;
+const User = db.database.collection('User');
 
 checkDuplicateUser = (req, res, next) => {
     User.findOne({
         username: req.body.username
-    }).exec((err, user) => {
-        if (err) {
-            res.status(500).send({ message: err });
-            return;
-        }
-
+    }).then(user => {
         if (user) {
             res.status(400).send({ message: 'Username already exists!' });
             return;
@@ -18,20 +13,21 @@ checkDuplicateUser = (req, res, next) => {
 
         User.findOne({
             email: req.body.email
-        }).exec((err, user) => {
-            if (err) {
-                res.status(500).send({ message: err });
-                return;
-            }
-    
+        }).then(user => {
             if (user) {
                 res.status(400).send({ message: 'Email already exists!' });
                 return;
             }
 
             next();
+        }, err => {
+            res.status(500).send({ message: err });
+            return;
         })
-    })
+    }, err => {
+        res.status(500).send({ message: err });
+        return;
+    });
 }
 
 checkRoleExisted = (req, res, next) => {

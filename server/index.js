@@ -8,7 +8,6 @@ const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 
 const app = express();
-const Role = db.role;
 
 require('dotenv').config({ path: `${__dirname }/.env.${process.env.NODE_ENV}` })
 
@@ -28,38 +27,36 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => {    
+    db.database.collection('User').find(function(findErr, result) {
+        if (findErr) throw findErr;
+        result.forEach(doc => {
+            console.log(doc);
+        })
+      });
     res.status(200).render('landing');
 });
 
-require('../restful/routes/auth')(app);
+db.connect().then(result => {
+    require('../restful/routes/auth')(app);
+    init();
+})
 
 const port = process.env.PORT || 1336;
 const httpServer = require('http').createServer(app);
 httpServer.listen(port, () => {
-    db.mongoose.connect(
-        process.env.MONGODB_URI, 
-        {useNewUrlParser: true, useUnifiedTopology: true}
-    )
-    .then(() => {
-        console.log(`SwiftyCareer running on port ${port}`);
-        init();
-    })
-    .catch(error => {
-        console.log(error);
-    });
+    console.log(`SwiftyCareer running on port ${port}`);
 });
 
 // create 3 roles in MongoDB
 function init() {
-    Role.estimatedDocumentCount((err, count) => {
+    db.database.collection('Role').estimatedDocumentCount((err, count) => {
         if (!err && count === 0) {
             db.ROLES.forEach(role => {
-                new Role({
-                    name: role
-                }).save(err => {
-                    if (err) console.log(`Error when creating ${role} role: ${err}`);
-                    console.log(`Added ${role} role to collection`);
+                db.database.collection('Role').insert({'name': role}).then(result => {
+                    console.log(`Added ${result} role to collection`);
+                }, error => {
+                    console.log(`Error when creating ${role} role: ${error}`);
                 });
             });
 
