@@ -1,6 +1,6 @@
 const { verifyRegistration }    = require('../../middleware');
 const { verifyToken }           = require('../../middleware/authJWT');
-const authentication            = require('../../view_model/auth');
+const authentication            = require('../../../view_model/auth');
 
 module.exports = function(app) {
     app.use(function(req, res, next) {

@@ -102,6 +102,6 @@ All ejs files should be placed insede `views` folder, for javascript, css and im
 
 We use Node.js and MongoDB as our server + database service. 
 
-All REST routes js files should be placed inside `restful/routes` folder.
+All REST routes js files should be placed inside `api/restful/routes` folder.
 
 All GraphQL js files should be place inside `graph_ql` folder.

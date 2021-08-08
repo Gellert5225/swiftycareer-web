@@ -3,7 +3,7 @@ const methodOverride  = require('method-override');
 const cors            = require('cors');
 const path            = require('path');
 const cookieParser    = require('cookie-parser');
-const db              = require('../model/index.js');
+const db              = require('./db.js');
 const { graphqlHTTP } = require('express-graphql');
 const { buildSchema } = require('graphql');
 
@@ -38,7 +38,7 @@ app.get('/', (req, res) => {
 });
 
 db.connect().then(result => {
-    require('../restful/routes/auth')(app);
+    require('../api/restful/routes/auth')(app);
     init();
 })
 

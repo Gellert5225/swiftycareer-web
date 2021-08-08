@@ -1,4 +1,4 @@
-const db   = require('../model/index');
+const db   = require('../server/db');
 const User = db.database.collection('User');
 const Role = db.database.collection('Role');
 
