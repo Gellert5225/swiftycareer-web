@@ -1,17 +1,43 @@
 const { Readable } = require('stream');
-const db   = require('../server/db');
+const db = require('../server/db');
+const User = db.database.collection('User');
 const Feed = db.database.collection('Feed');
 const Comment = db.database.collection('Comment');
 
 exports.getFeeds = () => {
-
+    return new Promise((resolve, reject) => {
+        (async () => {
+            try {
+                const feeds = await Feed.find().toArray();
+                console.log('begin');
+                var feedsResponse = [];
+                for (var feed of feeds) {
+                    const user = await User.findOne({ _id: db.mongodb.ObjectID(feed.author_id) });
+                    console.log(user);
+                    feed.author = {
+                        username: user.username,
+                        roles: user.roles
+                    };
+                    var imageDatas = [];
+                    for (const file of feed.images) {
+                        const chunks = await imageDownloadPromises(file);
+                        imageDatas.push(chunks);
+                    }
+                    feed.images = imageDatas;
+                    feedsResponse.push(feed);
+                }
+                console.log('end');
+                console.log(feedsResponse);
+            } catch (error) {
+                
+            }
+        })();
+    });
 }
 
 exports.postFeed = ({files, body}) => {
-    console.log(body);
     return new Promise((resolve, reject) => {
-        console.log('begin uploading');
-        Promise.all(imageSavePromises(files)).then((values) => {
+        Promise.all(imageUploadPromises(files)).then((values) => {
             (async () => {
                 try {
                     const feed = {
@@ -48,11 +74,34 @@ exports.postComment = (comment) => {
 
 }
 
-function imageSavePromises(files) {
+function retrieveAuthorPromise(id) {
+
+}
+
+function imageDownloadPromises(fileId) {
+    let bucket = new db.mongodb.GridFSBucket(db.database, {
+        bucketName: 'feedImages'
+    });
+
+    return new Promise ((resolve, reject) => {
+        let downloadStream = bucket.openDownloadStream(fileId);
+        var data;
+        downloadStream.on('data', (chunk) => {
+            data = chunk;
+        });
+        downloadStream.on('error', (error) => {
+            reject(error);
+        });
+        downloadStream.on('end', () => {
+            resolve(data);
+        });
+    });
+}
+
+function imageUploadPromises(files) {
     var imageSavePromises = [];
 
     files.forEach(file => {
-        console.log(file.originalname);
         let bucket = new db.mongodb.GridFSBucket(db.database, {
             bucketName: 'feedImages'
         });

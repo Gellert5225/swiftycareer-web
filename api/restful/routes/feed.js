@@ -3,7 +3,9 @@ const feedViewModel             = require('../../../view_model/feed');
 
 module.exports = function(app, upload) {
     app.get('/feeds', function(req, res) {
-        res.render('feed');
+        feedViewModel.getFeeds().then(result => {
+            res.render('feed');
+        })
     });
 
     app.post('/feeds', function(req, res) {
