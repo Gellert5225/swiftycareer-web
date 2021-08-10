@@ -2,7 +2,7 @@
 <%- include ("./partials/navbar_main.ejs") %>
 
 <div id="feed-wrapper" class="main-wrapper">
-  <div id="currentUser" data-currentUser='<%= JSON.stringify(currentUser) %>' style="display: none;"></div>
+  <div id="currentUser" data-currentUser='' style="display: none;"></div>
   <div class="row">
     <div id="feed-left-col">
     
@@ -36,7 +36,7 @@
                   <label for="image-selector" class="custom-file-upload">
                     <img id="image-selector-logo" src="../../public/assets/images/addImage.png">
                   </label>
-                  <input id="image-selector" type="file" accept="image/*"/>
+                  <input id="image-selector" name="feedImage" type="file" accept="image/*"/>
                   <!-- <label for="document-selector" class="custom-file-upload">
                     <img id="image-selector-logo" src="../../public/assets/images/addDocument.png">
                   </label>
@@ -49,7 +49,7 @@
         </div>
       </div>
       <div id="postFeedWrapper">
-        <img id="postFeed-profileImg" src="<%= currentUser.get('profilePicture').url() %>">
+        <img id="postFeed-profileImg">
         <div id="postFeedBox">What's on your mind?</div>
       </div>
     </div>

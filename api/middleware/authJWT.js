@@ -1,3 +1,8 @@
+/**
+ * Middleware
+ * Verify JWT token for authorization purposes
+ */
+
 const jwt   = require('jsonwebtoken');
 const db    = require('../../server/db');
 const User  = db.user;

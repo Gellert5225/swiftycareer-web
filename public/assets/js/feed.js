@@ -164,25 +164,25 @@ $(document).ready(function() {
     // jquery.integrity = "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=";
     // jquery.crossOrigin = "anonymous";
     // document.getElementsByTagName('head').appendChild(jquery);
-    $.ajax({
-        type: 'get',
-        url: '/feeds',
-        dataType: 'json'
-    })
-    .done(function(result) {
-        console.log(result);
-        if (result.error) {
-            console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
-        } else {
-            feeds = result.feeds;
-            popUpPage();
-        }
-    })
-    .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(errorThrown);
-    })
+    // $.ajax({
+    //     type: 'get',
+    //     url: '/feeds',
+    //     dataType: 'json'
+    // })
+    // .done(function(result) {
+    //     console.log(result);
+    //     if (result.error) {
+    //         console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
+    //     } else {
+    //         feeds = result.feeds;
+    //         popUpPage();
+    //     }
+    // })
+    // .fail(function(jqXHR, textStatus, errorThrown) {
+    //     console.log(jqXHR);
+    //     console.log(textStatus);
+    //     console.log(errorThrown);
+    // })
 });
 
 //eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGRjZTJmMWUzM2E1MGJiMWVkNGJjMyIsImlhdCI6MTYyODI5NDcwMywiZXhwIjoxNjI4MzgxMTAzfQ.tX00iApZ4J05dsH8exKCiGh62ih9hK--JrnAM23TT2s
@@ -338,13 +338,14 @@ function calculateTimeStamp(dateString) {
 
 // post feed
 function postFeed(event) {
+    console.log('hello???');
     var post = JSON.stringify(quill_postFeed.getContents());
     var myFormData = new FormData();
     feedImages.forEach((image, index) => {
         console.log(image);
         myFormData.append('feedImage', image.blob, image.name);
     });
-    myFormData.append('authorId', currentUser.objectId);
+    myFormData.append('authorId', "610fac687f8aa0468e735f1d");
     myFormData.append('text_JSON', post);
     myFormData.append('text_HTML', $('#postFeedEditor .ql-editor').html());
     $('#postFeedModal').modal('hide');

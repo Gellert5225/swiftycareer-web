@@ -48,7 +48,6 @@ function signIn(event) {
     })
     .done(function(result) {
         window.localStorage.setItem('currentUser', JSON.stringify(result['user']));
-        console.log(window.localStorage.getItem('currentUser'));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);

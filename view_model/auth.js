@@ -1,3 +1,7 @@
+/**
+ * Handles the authentication - User SignUp and SignIn
+ */
+
 const db   = require('../server/db');
 const User = db.database.collection('User');
 const Role = db.database.collection('Role');
@@ -52,7 +56,7 @@ exports.signIn = ({ username, password }) => {
 
                 let bcrypt_res = await bcrypt.compare(password, user.hashed_password);
                 if (!bcrypt_res) { reject({ status: 401, error: 'Invalid Password' }); return; }
-                var token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+                var token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
                     expiresIn: 30
                 });
                 resolve({ 

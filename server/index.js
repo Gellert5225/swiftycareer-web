@@ -27,18 +27,12 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));
 
-app.get('/', (req, res) => {    
-    db.database.collection('User').find(function(findErr, result) {
-        if (findErr) throw findErr;
-        result.forEach(doc => {
-            console.log(doc);
-        })
-      });
+app.get('/', (req, res) => {
     res.status(200).render('landing');
 });
 
 db.connect().then(result => {
-    require('../api/restful/routes/auth')(app);
+    require('../api/restful/routes/index')(app);
     init();
 })
 

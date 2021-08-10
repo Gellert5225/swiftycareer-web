@@ -1,4 +1,5 @@
-const { MongoClient }   = require("mongodb");
+const mongodb = require('mongodb')
+const MongoClient = mongodb.MongoClient;
 
 MongoClient.Promise = global.Promise;
 
@@ -20,6 +21,7 @@ db.connect = () => {
     });
 }
 
+db.mongodb = mongodb;
 db.mongoClient= MongoClient;
 db.ROLES = ['user', 'admin', 'mod'];
 

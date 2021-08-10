@@ -27,15 +27,10 @@
       <li class="navbar-li navbar-li-main navbar-profilepic">
         <div class="btn-group">
           <button id="profile-button" type="button" data-bs-toggle="dropdown" aria-expanded="false" data-bs-offset="10,10">
-            <% if (currentUser.get('profilePicture')) { %>
-            <img src="<%= currentUser.get('profilePicture').url()%>" alt="../../public/assets/images/alert.png" id="itemImg">
-            <% } else { %>
-            <img src="../../public/assets/images/friend.png" alt="../../public/assets/images/alert.png" id="itemImg">
-            <% } %>
+
           </button>
           <ul class="dropdown-menu dropdown-menu-lg-end navbar-profileDropdownMenu">
             <li><a class="dropdown-item navbar-profileDropdownItem" id="navbar-profileDropdownUsername" href="#">
-              <%= currentUser.get('display_name') %>
             </a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item navbar-profileDropdownItem" href="#">Activity</a></li>
