@@ -27,6 +27,11 @@ exports.signUp = (user) => {
                     user.roles = [user_role._id];
                 }
 
+                user.created_at = Date.now();
+                user.display_name = user.username;
+                user.bio = '';
+                user.position = '';
+
                 let insert_user_response = await User.insertOne(user);
                 const result_user = insert_user_response.ops[0];
                 var token = jwt.sign({ id: result_user._id }, process.env.JWT_SECRET, {
@@ -37,6 +42,9 @@ exports.signUp = (user) => {
                     user: { 
                         _id: result_user._id, 
                         username: result_user.username, 
+                        display_name: result_user.display_name,
+                        bio: result_user.bio,
+                        position: result_user.position,
                         roles: result_user.roles, 
                         accessToken: token 
                     } 
@@ -67,6 +75,9 @@ exports.signIn = ({ username, password }) => {
                     user: { 
                         _id: user._id, 
                         username: user.username, 
+                        display_name: user.display_name,
+                        bio: user.bio,
+                        position: user.position,
                         roles: user.roles, 
                         accessToken: token,
                         profile_pic: profile_pic

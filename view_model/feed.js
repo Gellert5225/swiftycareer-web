@@ -10,7 +10,7 @@ exports.getFeeds = () => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {
-                const feeds = await Feed.find().toArray();
+                const feeds = await Feed.find().sort({ created_at: -1 }).toArray();
                 console.log('begin');
                 var feedsResponse = [];
                 for (var feed of feeds) {
@@ -20,6 +20,9 @@ exports.getFeeds = () => {
                         console.log(user);
                         feed.author = {
                             username: user.username,
+                            display_name: user.display_name,
+                            bio: user.bio,
+                            position: user.position,
                             roles: user.roles,
                             profile_pic: profile_pic
                         };
@@ -38,18 +41,20 @@ exports.getFeeds = () => {
     });
 }
 
-exports.postFeed = ({files, body}) => {
+exports.postFeed = ({ files, body }) => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {
                 const feed = {
+                    created_at: Date.now(),
                     like_count: 0,
                     comment_count: 0,
                     share_count: 0,
                     text_JSON: body.text_JSON,
                     text: body.text_HTML,
                     author_id: body.authorId,
-                    images: files
+                    images: files,
+                    liked_user_ids: []
                 }
 
                 let insert_feed_response = await Feed.insertOne(feed);
@@ -66,6 +71,29 @@ exports.postFeed = ({files, body}) => {
                 reject({ error: error });
             }
         })();
+    });
+}
+
+exports.putFeed = ({ feedId, userId, amount }) => {
+    return new Promise((resolve, reject) => {
+        (async () => {
+            try {
+                console.log(feedId);
+                console.log(parseInt(amount));
+                const feed = await Feed.findOneAndUpdate(
+                    { _id: db.mongodb.ObjectID(feedId) }, 
+                    {
+                        $inc: { like_count: parseInt(amount) },
+                        $push: { liked_user_ids: userId } 
+                    },
+                    { update: true }
+                );
+
+                console.log(feed);
+            } catch (error) {
+                console.log(error);
+            }
+        })()
     });
 }
 

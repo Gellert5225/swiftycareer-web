@@ -142,11 +142,6 @@ function linkify(text) {
     });
 }
 
-var feed = {
-    post: Object,
-    comments: [Object]
-}
-
 var feeds = []
 
 var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
@@ -205,12 +200,12 @@ function generateFeedHTML(feedIndex, feed) {
         <div id="card-text${feedIndex}" style="display: none;">
             ${feed.text}
         </div>
-        <div class="card feed-card" id="feed-card${feedIndex}" data-feedId="${feed.objectId}" style="width: auto;">
+        <div class="card feed-card" id="feed-card${feedIndex}" data-feedId="${feed._id}" style="width: auto;">
             <div class="card-body feed-card-body">
                 <div style="display: inline-block; width: 80%;">
                     <img id="feed-card-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(feed.author['profile_pic']['data'])))}">
                     <h5 class="card-title feed-card-username">${feed.author.display_name}</h5>
-                    <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.position}</h6>
+                    <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.bio}</h6>
                     <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}"></p>
                 </div>
                 <div id="feed-cardTime">
@@ -264,7 +259,7 @@ function generateFeedHTML(feedIndex, feed) {
             <div class="row">
                 <div class="col-4" id="like-col">
                     <div class="utility-col-wrapper like-col-wrapper" id="like-col-wrapper${feedIndex}" onclick="handleLike(event)">
-                        <img src="../public/assets/images/like-selected.png" class="feed-utility-img">
+                        <img src=${feed.liked_user_ids.includes(currentUser._id) ? "../public/assets/images/like-selected.png" :  "../public/assets/images/like.png"} class="feed-utility-img">
                         <p class="numberOf" id="numberOfLikes">${feed.like_count}</p>
                     </div>
                 </div>
@@ -285,7 +280,7 @@ function generateFeedHTML(feedIndex, feed) {
                 <hr class="feed-card-divider">
                 <div id="postCommentWrapper">
                     <img id="comment-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])))}">
-                    <form class="commentTextForm" id="commentTextForm${feedIndex}" method="POST" action="/feed/${feed.objectId}/comments">
+                    <form class="commentTextForm" id="commentTextForm${feedIndex}" method="POST" action="/feed/${feed._id}/comments">
                         <textarea placeholder="Write your comment..." name="commentText" class="commentTextArea" id="commentTextArea${feedIndex}" oninput="auto_grow(this)" onkeypress="postComment(event)"></textarea>
                     </form>
                 </div>
@@ -395,11 +390,11 @@ function handleLike(event) {
     targetElement.find('p').text(prevLikes + amount);
 
     $.ajax({                    
-        url: '/feed/' + feedId + '/likes',     
+        url: '/feeds/' + feedId + '/likes',     
         type: 'put',
         data : {
             amount : amount,
-            userId: currentUser.objectId
+            userId: currentUser._id
         }
     })
     .done(function(data) {

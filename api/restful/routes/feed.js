@@ -10,7 +10,7 @@ module.exports = function(app, upload) {
 
     app.get('/feed', function(req, res) {
         res.render('feed');
-    })
+    });
 
     app.post('/feeds', function(req, res) {
         upload.array('feedImage', 5)(req, res, (err) => {
@@ -21,5 +21,11 @@ module.exports = function(app, upload) {
                 res.json(error);
             });
         });
-    })
+    });
+
+    app.put('/feeds/:id/likes', function(req, res) {
+        feedViewModel.putFeed({ feedId: req.params.id, userId: req.body.userId, amount: req.body.amount }).then(result => {
+            
+        });
+    });
 }
