@@ -151,9 +151,11 @@ var newFeedIndex = -1;
 
 $(document).ready(function() {
     console.log("Page loaded");
-    var img = $('#postFeed-profileImg');
+    let img = $('#postFeed-profileImg');
+    let navnarProfileImg = $('#navbarProfileImage');
     const img_data = btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])));
     img.attr('src', 'data:image/png;base64,' + img_data);
+    navnarProfileImg.attr('src', 'data:image/png;base64,' + img_data);
 
     $.ajax({
         type: 'get',
@@ -206,7 +208,7 @@ function generateFeedHTML(feedIndex, feed) {
                     <img id="feed-card-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(feed.author['profile_pic']['data'])))}">
                     <h5 class="card-title feed-card-username">${feed.author.display_name}</h5>
                     <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.bio}</h6>
-                    <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}"></p>
+                    <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}">${calculateTimeStamp(feed.created_at)}</p>
                 </div>
                 <div id="feed-cardTime">
                     <div class="btn-group">
@@ -293,37 +295,27 @@ function generateFeedHTML(feedIndex, feed) {
 }
 
 // handle time stamp
-function calculateTimeStamp(dateString) {
+function calculateTimeStamp(date) {
     const _MS_PER_HOUR = 1000 * 60 * 60;
-    const now = new Date();
-    const utc1 = Date.parse(dateString);
-    const utc2 = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate(), now.getUTCHours(), now.getUTCMinutes(), now.getUTCSeconds());
-    var secondDiff = Math.floor((utc2 - utc1) / 1000);
+    const now = Date.now();
+    var secondDiff = Math.floor((now - date) / 1000);
     var minuteDiff = Math.floor(secondDiff / 60);
-    var hourDiff = Math.floor((utc2 - utc1) / _MS_PER_HOUR);
+    var hourDiff = Math.floor((now - date) / _MS_PER_HOUR);
     var dayDiff = Math.floor(hourDiff / 24);
 
-    var date = new Date(0);
-    date.setUTCSeconds(utc1/1000);
-    var localDateFull = date.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
+    var temp = new Date(0);
+    temp.setUTCSeconds(date/1000);
+    var localDateFull = temp.toLocaleDateString("en-US", { year: 'numeric', month: 'long', day: 'numeric' });
 
-    if (secondDiff < 60) {
+    if (secondDiff < 60) 
         return 'Just Now';
-    } else {
-        if (minuteDiff < 60) {
-            return String(minuteDiff) + ' min';
-        } else {
-            if (hourDiff < 24) {
-                return String(hourDiff) + ' hour';
-            } else {
-                if (dayDiff < 6) {
-                    return String(dayDiff) + ' day';
-                } else {
-                    return String(localDateFull);
-                }
-            }
-        }
-    }
+    if (minuteDiff < 60)
+        return String(minuteDiff) + ' min';
+    if (hourDiff < 24) 
+        return String(hourDiff) + ' hour';
+    if (dayDiff < 6) 
+        return String(dayDiff) + ' day';
+    return String(localDateFull);
 }
 
 // post feed

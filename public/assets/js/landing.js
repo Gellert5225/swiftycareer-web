@@ -45,8 +45,6 @@ function signIn(event) {
         "password": password
     }
 
-    console.log($('#signupform').find('#username'));
-
     $.ajax({
         url: '/api/rest/auth/signIn',
         dataType: 'json',
@@ -71,3 +69,9 @@ function signIn(event) {
         console.log(errorThrown);
     })
 }
+
+$(document).ready(function() {
+    const img_data = btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])));
+    console.log($('#navbarProfileImage'));
+    $('#navbarProfileImage').attr('src', 'data:image/png;base64,' + img_data);
+})
