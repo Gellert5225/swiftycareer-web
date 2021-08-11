@@ -5,6 +5,7 @@
 const db   = require('../server/db');
 const User = db.database.collection('User');
 const Role = db.database.collection('Role');
+const fileUtil = require('./file_util');
 
 var jwt    = require('jsonwebtoken');
 var bcrypt = require('bcryptjs');
@@ -34,7 +35,7 @@ exports.signUp = (user) => {
                 resolve({ 
                     status: 200, 
                     user: { 
-                        id: result_user._id, 
+                        _id: result_user._id, 
                         username: result_user.username, 
                         roles: result_user.roles, 
                         accessToken: token 
@@ -54,6 +55,8 @@ exports.signIn = ({ username, password }) => {
                 let user = await User.findOne({ username: username });
                 if (!user) { reject({ status: 404, error: 'Username does not exist!' }); return; }
 
+                const profile_pic = await fileUtil.imageDownloadPromises(user.profile_picture, 'profileImages');
+
                 let bcrypt_res = await bcrypt.compare(password, user.hashed_password);
                 if (!bcrypt_res) { reject({ status: 401, error: 'Invalid Password' }); return; }
                 var token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
@@ -62,13 +65,15 @@ exports.signIn = ({ username, password }) => {
                 resolve({ 
                     status: 200, 
                     user: { 
-                        id: user._id, 
+                        _id: user._id, 
                         username: user.username, 
                         roles: user.roles, 
-                        accessToken: token 
+                        accessToken: token,
+                        profile_pic: profile_pic
                     } 
                 });
             } catch (error) {
+                console.log(error);
                 reject({ status: 500, error: error });
             }
         })();

@@ -19,6 +19,14 @@ function signUp(event) {
     })
     .done(function(result) {
         console.log(result);
+        window.localStorage.setItem('currentUser', JSON.stringify({
+            _id: result['user']['_id'],
+            username: result['user']['username'],
+            email: result['user']['email'],
+            display_name: result['user']['display_name'],
+            bio: result['user']['bio'],
+            roles: result['user']['roles']
+        }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -47,7 +55,15 @@ function signIn(event) {
         contentType: 'application/json'
     })
     .done(function(result) {
-        window.localStorage.setItem('currentUser', JSON.stringify(result['user']));
+        window.localStorage.setItem('currentUser', JSON.stringify({
+            _id: result['user']['_id'],
+            username: result['user']['username'],
+            email: result['user']['email'],
+            display_name: result['user']['display_name'],
+            bio: result['user']['bio'],
+            roles: result['user']['roles'],
+            profile_pic: result['user']['profile_pic']
+        }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);

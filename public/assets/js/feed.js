@@ -149,43 +149,38 @@ var feed = {
 
 var feeds = []
 
-var currentUser = JSON.parse($('#currentUser').attr('data-currentUser'));
+var currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
 
 var newCommentIndex = -1;
 var newFeedIndex = -1;
 
 $(document).ready(function() {
     console.log("Page loaded");
-    // var quilljs = document.createElement('script');
-    // quilljs.src = 'https://cdn.quilljs.com/1.3.6/quill.js';
-    // document.getElementsByTagName('head').appendChild(quilljs);
-    // var jquery = document.createElement('script');
-    // jquery.src = 'https://code.jquery.com/jquery-3.6.0.min.js';
-    // jquery.integrity = "sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=";
-    // jquery.crossOrigin = "anonymous";
-    // document.getElementsByTagName('head').appendChild(jquery);
-    // $.ajax({
-    //     type: 'get',
-    //     url: '/feeds',
-    //     dataType: 'json'
-    // })
-    // .done(function(result) {
-    //     console.log(result);
-    //     if (result.error) {
-    //         console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
-    //     } else {
-    //         feeds = result.feeds;
-    //         popUpPage();
-    //     }
-    // })
-    // .fail(function(jqXHR, textStatus, errorThrown) {
-    //     console.log(jqXHR);
-    //     console.log(textStatus);
-    //     console.log(errorThrown);
-    // })
-});
+    var img = $('#postFeed-profileImg');
+    const img_data = btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])));
+    img.attr('src', 'data:image/png;base64,' + img_data);
 
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxMGRjZTJmMWUzM2E1MGJiMWVkNGJjMyIsImlhdCI6MTYyODI5NDcwMywiZXhwIjoxNjI4MzgxMTAzfQ.tX00iApZ4J05dsH8exKCiGh62ih9hK--JrnAM23TT2s
+    $.ajax({
+        type: 'get',
+        url: '/feeds',
+        dataType: 'json'
+    })
+    .done(function(result) {
+        console.log(result);
+        if (result.error) {
+            console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
+        } else {
+            feeds = result.feeds;
+            popUpPage();
+        }
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log('error when getting feeds');
+        console.log(jqXHR);
+        console.log(textStatus);
+        console.log(errorThrown);
+    })
+});
 
 function popUpPage() {
     feeds.forEach((feed, index) => {
@@ -213,10 +208,10 @@ function generateFeedHTML(feedIndex, feed) {
         <div class="card feed-card" id="feed-card${feedIndex}" data-feedId="${feed.objectId}" style="width: auto;">
             <div class="card-body feed-card-body">
                 <div style="display: inline-block; width: 80%;">
-                    <img id="feed-card-profileImg" src="${feed.author.profilePicture.url}">
+                    <img id="feed-card-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(feed.author['profile_pic']['data'])))}">
                     <h5 class="card-title feed-card-username">${feed.author.display_name}</h5>
                     <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.position}</h6>
-                    <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}">${calculateTimeStamp(feed.createdAt)}</p>
+                    <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}"></p>
                 </div>
                 <div id="feed-cardTime">
                     <div class="btn-group">
@@ -247,10 +242,10 @@ function generateFeedHTML(feedIndex, feed) {
                             ${feed.images.map((image, index) => {
                                 return index == 0 ? 
                                     `<div class="carousel-item active">
-                                        <img src="${image.image.url}" class="d-block w-100">
+                                        <img src="data:image/jpeg;base64,${image['buffer']}" class="d-block w-100">
                                     </div>` : 
                                     `<div class="carousel-item">
-                                        <img src="${image.image.url}" class="d-block w-100">
+                                        <img src="data:image/jpeg;base64,${image['buffer']}" class="d-block w-100">
                                     </div>`
                             }).join('')}
                         </div>
@@ -269,27 +264,27 @@ function generateFeedHTML(feedIndex, feed) {
             <div class="row">
                 <div class="col-4" id="like-col">
                     <div class="utility-col-wrapper like-col-wrapper" id="like-col-wrapper${feedIndex}" onclick="handleLike(event)">
-                        <img src=${feed.likedUserIds.includes(currentUser.objectId) ? "../public/assets/images/like-selected.png" : "../public/assets/images/like.png"} class="feed-utility-img">
-                        <p class="numberOf" id="numberOfLikes">${feed.numberOfLikes}</p>
+                        <img src="../public/assets/images/like-selected.png" class="feed-utility-img">
+                        <p class="numberOf" id="numberOfLikes">${feed.like_count}</p>
                     </div>
                 </div>
                 <div class="col-4" id="comment-col">
                     <div class="utility-col-wrapper comment-col-wrapper" id="comment-col-wrapper${feedIndex}" onclick="handleComment(event)">
                         <img src="../public/assets/images/comment.png" class="feed-utility-img">
-                        <p class="numberOf" id="numberOfComments">${feed.numberOfComments}</p>
+                        <p class="numberOf" id="numberOfComments">${feed.comment_count}</p>
                     </div>
                 </div>
                 <div class="col-4" id="repost-col">
                     <div class="utility-col-wrapper repost-col-wrapper" id="repost-col-wrapper${feedIndex}">
                         <img src="../public/assets/images/repost.png" class="feed-utility-img">
-                        <p class="numberOf" id="numberOfReposts">${feed.numberOfShares}</p>
+                        <p class="numberOf" id="numberOfReposts">${feed.share_count}</p>
                     </div>
                 </div>
             </div>
             <div id="commentSection${feedIndex}" class="commentSection">
                 <hr class="feed-card-divider">
                 <div id="postCommentWrapper">
-                    <img id="comment-profileImg" src="${currentUser.profilePicture.url}">
+                    <img id="comment-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])))}">
                     <form class="commentTextForm" id="commentTextForm${feedIndex}" method="POST" action="/feed/${feed.objectId}/comments">
                         <textarea placeholder="Write your comment..." name="commentText" class="commentTextArea" id="commentTextArea${feedIndex}" oninput="auto_grow(this)" onkeypress="postComment(event)"></textarea>
                     </form>
@@ -338,14 +333,12 @@ function calculateTimeStamp(dateString) {
 
 // post feed
 function postFeed(event) {
-    console.log('hello???');
     var post = JSON.stringify(quill_postFeed.getContents());
     var myFormData = new FormData();
     feedImages.forEach((image, index) => {
-        console.log(image);
         myFormData.append('feedImage', image.blob, image.name);
     });
-    myFormData.append('authorId', "610fac687f8aa0468e735f1d");
+    myFormData.append('authorId', JSON.parse(window.localStorage.getItem('currentUser'))._id);
     myFormData.append('text_JSON', post);
     myFormData.append('text_HTML', $('#postFeedEditor .ql-editor').html());
     $('#postFeedModal').modal('hide');
@@ -360,8 +353,9 @@ function postFeed(event) {
         processData: false
     })
     .done(function(result) {
-        console.log(result);
-        $(generateFeedHTML(newFeedIndex, result.info)).insertAfter('#postFeedWrapper');
+        console.log(result.result_feed);
+        result.result_feed.author = currentUser;
+        $(generateFeedHTML(newFeedIndex, result.result_feed)).insertAfter('#postFeedWrapper');
         var quill = new Quill('#cardTextView' + newFeedIndex, {
             modules: {
                 toolbar: null,
@@ -373,7 +367,7 @@ function postFeed(event) {
         });
         quill.enable(false);
         quill.format('color', 'white');
-        quill.root.innerHTML = linkify(result.info.text);
+        quill.root.innerHTML = linkify(result.result_feed.text);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
