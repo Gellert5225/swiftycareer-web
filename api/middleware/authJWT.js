@@ -13,12 +13,12 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 verifyToken = (req, res, next) => {
     let token = req.cookies.user_jwt;
     if (!token) {
-        return res.status(403).send({ message: 'No token provided!' });
+        return res.status(403).json({ code: 403, info: 'No Token Provided', error: { name: "NoTokenProvided", message: "No Token Provided" } });
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(401).send({message: 'Unauthorized'});
+            return res.status(401).json({ code: err.code, info: 'Unauthorized', error: err });
         }
         req.userId = decoded.id;
         next();

@@ -3,21 +3,22 @@ const { Readable } = require('stream');
 const db = require('../server/db');
 const User = db.database.collection('User');
 const Feed = db.database.collection('Feed');
+const Image = db.database.collection('Image');
 const Comment = db.database.collection('Comment');
 const fileUtil = require('./file_util');
+const crypto = require('crypto');
+const path = require('path');
 
 exports.getFeeds = () => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {
                 const feeds = await Feed.find().sort({ created_at: -1 }).toArray();
-                console.log('begin');
                 var feedsResponse = [];
                 for (var feed of feeds) {
                     try {
                         const user = await User.findOne({ _id: db.mongodb.ObjectID(feed.author_id) });
                         const profile_pic = await fileUtil.imageDownloadPromises(user.profile_picture, 'profileImages');
-                        console.log(user);
                         feed.author = {
                             username: user.username,
                             display_name: user.display_name,
@@ -29,11 +30,10 @@ exports.getFeeds = () => {
                         feedsResponse.push(feed);
                     } catch (error) {
                         console.log(error);
+                        reject({ error: error });
                     }
                 }
-                console.log('end');
-                console.log(feedsResponse);
-                resolve({status: 200, feeds: feedsResponse});
+                resolve({ status: 200, feeds: feedsResponse });
             } catch (error) {
                 reject({ error: error });
             }
@@ -45,6 +45,25 @@ exports.postFeed = ({ files, body }) => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {
+                let urls = [];
+                for (file of files) {
+                    const buffer = crypto.randomBytes(16); 
+                    file.url = buffer.toString("hex") + path.extname(file.originalname);
+                    urls.push(file.url);
+
+                    const image = {
+                        originalname: file.originalname,
+                        fieldname: file.fieldname,
+                        encoding: file.encoding,
+                        mimetype: file.mimetype,
+                        buffer: file.buffer,
+                        size: file.size,
+                        url: file.url
+                    };
+
+                    await Image.insertOne(image);
+                }
+
                 const feed = {
                     created_at: Date.now(),
                     like_count: 0,
@@ -53,16 +72,13 @@ exports.postFeed = ({ files, body }) => {
                     text_JSON: body.text_JSON,
                     text: body.text_HTML,
                     author_id: body.authorId,
-                    images: files,
+                    images: urls,
                     liked_user_ids: []
                 }
 
                 let insert_feed_response = await Feed.insertOne(feed);
                 const result_feed = insert_feed_response.ops[0];
-                result_feed.images.forEach(img => {
-                    console.log(img.buffer);
-                    img.buffer = new Buffer.from(img.buffer, 'binary').toString('base64')
-                })
+                result_feed.images = urls;
                 resolve({
                     status: 200,
                     result_feed
@@ -78,20 +94,22 @@ exports.putFeed = ({ feedId, userId, amount }) => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {
-                console.log(feedId);
-                console.log(parseInt(amount));
+                const likeAmount = parseInt(amount);
+                let update = {};
+                if (likeAmount > 0) {
+                    update = { $inc: { like_count: likeAmount }, $push: { liked_user_ids: userId } };
+                } else {
+                    update = { $inc: { like_count: likeAmount }, $pull: { liked_user_ids: userId } };
+                }
                 const feed = await Feed.findOneAndUpdate(
                     { _id: db.mongodb.ObjectID(feedId) }, 
-                    {
-                        $inc: { like_count: parseInt(amount) },
-                        $push: { liked_user_ids: userId } 
-                    },
+                    update,
                     { update: true }
                 );
-
-                console.log(feed);
+                
+                resolve({ status: 200, result: feed });
             } catch (error) {
-                console.log(error);
+                reject({ error: error });
             }
         })()
     });

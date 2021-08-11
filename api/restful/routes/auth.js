@@ -20,7 +20,7 @@ module.exports = function(app) {
             res.cookie('user_jwt', response['user']['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
             res.json(response);
         }, error => {
-            res.send(error);
+            res.status(error.code).json({ code: error.code, info: 'error', error: error });
         });
     });
 
@@ -32,7 +32,7 @@ module.exports = function(app) {
             res.cookie('user_jwt', response['user']['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
             res.send(response);
         }, error => {
-            res.send(error);
+            res.status(error.code).json({ code: error.code, info: 'error', error: error });
         });
     });
 

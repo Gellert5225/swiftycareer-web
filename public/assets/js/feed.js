@@ -167,7 +167,8 @@ $(document).ready(function() {
         if (result.error) {
             console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
         } else {
-            feeds = result.feeds;
+            feeds = result.info.feeds;
+            console.log(feeds[0].images);
             popUpPage();
         }
     })
@@ -238,11 +239,11 @@ function generateFeedHTML(feedIndex, feed) {
                         <div class="carousel-inner">
                             ${feed.images.map((image, index) => {
                                 return index == 0 ? 
-                                    `<div class="carousel-item active">
-                                        <img src="data:image/jpeg;base64,${image['buffer']}" class="d-block w-100">
+                                    `<div class="carousel-item active feedImgPlaceholder">
+                                        <img src="api/files/${image}" class="d-block w-100">
                                     </div>` : 
-                                    `<div class="carousel-item">
-                                        <img src="data:image/jpeg;base64,${image['buffer']}" class="d-block w-100">
+                                    `<div class="carousel-item feedImgPlaceholder">
+                                        <img src="api/files/${image}" class="d-block w-100">
                                     </div>`
                             }).join('')}
                         </div>
@@ -340,21 +341,25 @@ function postFeed(event) {
         processData: false
     })
     .done(function(result) {
-        console.log(result.result_feed);
-        result.result_feed.author = currentUser;
-        $(generateFeedHTML(newFeedIndex, result.result_feed)).insertAfter('#postFeedWrapper');
-        var quill = new Quill('#cardTextView' + newFeedIndex, {
-            modules: {
-                toolbar: null,
-                clipboard: {
-                    matchVisual: false
-                }
-            },
-            theme: 'snow'
-        });
-        quill.enable(false);
-        quill.format('color', 'white');
-        quill.root.innerHTML = linkify(result.result_feed.text);
+        console.log(result);
+        if (result.error) {
+            console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
+        } else {
+            result.info.result_feed.author = currentUser;
+            $(generateFeedHTML(newFeedIndex, result.info.result_feed)).insertAfter('#postFeedWrapper');
+            var quill = new Quill('#cardTextView' + newFeedIndex, {
+                modules: {
+                    toolbar: null,
+                    clipboard: {
+                        matchVisual: false
+                    }
+                },
+                theme: 'snow'
+            });
+            quill.enable(false);
+            quill.format('color', 'white');
+            quill.root.innerHTML = linkify(result.info.result_feed.text);
+        }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -501,7 +506,7 @@ function postComment(event) {
                 url: '/feed/' + feedId + '/comments',
                 data: {
                   commentText: commentText,
-                  commenter: currentUser.objectId
+                  commenter: currentUser._id
                 }
             })
             .done(function(data) {

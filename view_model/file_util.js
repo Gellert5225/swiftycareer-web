@@ -1,4 +1,6 @@
 const db = require('../server/db');
+const Feed = db.database.collection('Feed');
+const Image = db.database.collection('Image');
 
 exports.imageDownloadPromises = (fileId, bucketName) => {
     let bucket = new db.mongodb.GridFSBucket(db.database, {
@@ -20,4 +22,23 @@ exports.imageDownloadPromises = (fileId, bucketName) => {
             resolve(data);
         });
     });
+}
+
+exports.loadImageFromURL = (url) => {
+    return new Promise((resolve, reject) => {
+        (async () => {
+            try {
+                const image = await Image.findOne({ 'url': url });
+                if (!image) {
+                    reject({ code: 404, info: 'error', error: "Image Not Found" });
+                    return;
+                }
+                console.log(url);
+                console.log(image);
+                resolve(image.buffer);
+            } catch (error) {
+                reject({ error: error.message });
+            }
+        })()
+    })
 }
