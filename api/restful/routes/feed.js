@@ -6,7 +6,8 @@ module.exports = function(app, upload) {
         feedViewModel.getFeeds().then(result => {
             res.status(200).json({ code: 200, info: result, error: null });
         }, error => {
-            res.json({ code: error.code, info: 'error', error: error });
+            console.log('feed error ' + error.message);
+            res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
     });
 
@@ -20,7 +21,7 @@ module.exports = function(app, upload) {
             feedViewModel.postFeed({ files: req.files, body: req.body }).then(result => {
                 res.status(201).json({ code: 201, info: result, error: null });
             }, error => {
-                res.json({ code: error.code, info: 'error', error: error });
+                res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
             });
         });
     });
@@ -29,7 +30,7 @@ module.exports = function(app, upload) {
         feedViewModel.putFeed({ feedId: req.params.id, userId: req.body.userId, amount: req.body.amount }).then(result => {
             res.status(200).json({ code: 200, info: result, error: null });
         }, error => {
-            res.status(error.code).json({ code: error.code, info: 'error', error: error });
+            res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
     });
 }

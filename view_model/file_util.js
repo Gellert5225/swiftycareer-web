@@ -35,7 +35,7 @@ exports.loadImageFromURL = (url) => {
                 }
                 resolve(image.buffer);
             } catch (error) {
-                reject(error);
+                reject({ status: 500, message: error.message });
             }
         })()
     })

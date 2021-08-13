@@ -14,10 +14,10 @@ module.exports = (app) => {
                 });
                 res.status(200).end(img); 
             } catch (error) {
-                res.send({ error: error });
+                res.status(500).json({ status: 500, message: error.message });
             }
         }, error => {
-            res.json(error);
+            res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         })
     });
 }

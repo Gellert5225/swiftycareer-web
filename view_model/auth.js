@@ -50,7 +50,7 @@ exports.signUp = (user) => {
                     } 
                 });
             } catch (error) {
-                reject({ status: 500, error: error });
+                reject({ status: 500, message: error.message });
             }
         })();
     });
@@ -61,7 +61,7 @@ exports.signIn = ({ username, password }) => {
         (async () => {
             try {
                 let user = await User.findOne({ username: username });
-                if (!user) { reject({ status: 404, error: 'Username does not exist!' }); return; }
+                if (!user) { reject({ status: 404, message: 'Username does not exist!' }); return; }
 
                 const profile_pic = await fileUtil.imageDownloadPromises(user.profile_picture, 'profileImages');
 
@@ -84,8 +84,7 @@ exports.signIn = ({ username, password }) => {
                     } 
                 });
             } catch (error) {
-                console.log(error);
-                reject({ status: 500, error: error });
+                reject({ status: 500, message: error.message });
             }
         })();
     });

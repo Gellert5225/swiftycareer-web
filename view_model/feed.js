@@ -30,12 +30,12 @@ exports.getFeeds = () => {
                         feedsResponse.push(feed);
                     } catch (error) {
                         console.log(error);
-                        reject({ error: error });
+                        reject({ status: 500, message: error.message });
                     }
                 }
                 resolve(feedsResponse);
             } catch (error) {
-                reject(error);
+                reject({ status: 500, message: error.message });
             }
         })();
     });
@@ -81,7 +81,7 @@ exports.postFeed = ({ files, body }) => {
                 result_feed.images = urls;
                 resolve(result_feed)
             } catch (error) {
-                reject(error);
+                reject({ status: 500, message: error.message });
             }
         })();
     });
@@ -106,7 +106,7 @@ exports.putFeed = ({ feedId, userId, amount }) => {
                 
                 resolve(feed);
             } catch (error) {
-                reject(error);
+                reject({ status: 500, message: error.message });
             }
         })()
     });

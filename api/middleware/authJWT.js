@@ -18,7 +18,7 @@ verifyToken = (req, res, next) => {
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(401).json({ code: 401, info: 'Unauthorized', error: err });
+            return res.status(401).json({ code: 401, info: 'Unauthorized', error: "Invalid JWT token. Please login again." });
         }
         req.userId = decoded.id;
         next();
