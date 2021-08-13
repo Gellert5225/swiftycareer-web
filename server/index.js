@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 app.set('view engine', 'ejs');
 app.use('/public', express.static(path.join(__dirname, '../public')));
 
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({extended: true}));
 app.use(express.json());
 app.use(cookieParser());
 app.use(methodOverride('_method'));

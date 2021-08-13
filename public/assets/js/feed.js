@@ -167,7 +167,7 @@ $(document).ready(function() {
         if (result.error) {
             console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
         } else {
-            feeds = result.info.feeds;
+            feeds = result.info;
             console.log(feeds[0].images);
             popUpPage();
         }
@@ -345,8 +345,8 @@ function postFeed(event) {
         if (result.error) {
             console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
         } else {
-            result.info.result_feed.author = currentUser;
-            $(generateFeedHTML(newFeedIndex, result.info.result_feed)).insertAfter('#postFeedWrapper');
+            result.info.author = currentUser;
+            $(generateFeedHTML(newFeedIndex, result.info)).insertAfter('#postFeedWrapper');
             var quill = new Quill('#cardTextView' + newFeedIndex, {
                 modules: {
                     toolbar: null,
@@ -358,7 +358,7 @@ function postFeed(event) {
             });
             quill.enable(false);
             quill.format('color', 'white');
-            quill.root.innerHTML = linkify(result.info.result_feed.text);
+            quill.root.innerHTML = linkify(result.info.text);
         }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {

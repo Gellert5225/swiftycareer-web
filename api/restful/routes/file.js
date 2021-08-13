@@ -12,7 +12,7 @@ module.exports = (app) => {
                     'Content-Type': mimeType,
                     'Content-Length': img.length
                 });
-                res.end(img); 
+                res.status(200).end(img); 
             } catch (error) {
                 res.send({ error: error });
             }

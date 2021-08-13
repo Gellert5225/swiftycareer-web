@@ -33,11 +33,9 @@ exports.loadImageFromURL = (url) => {
                     reject({ code: 404, info: 'error', error: "Image Not Found" });
                     return;
                 }
-                console.log(url);
-                console.log(image);
                 resolve(image.buffer);
             } catch (error) {
-                reject({ error: error.message });
+                reject(error);
             }
         })()
     })

@@ -33,9 +33,9 @@ exports.getFeeds = () => {
                         reject({ error: error });
                     }
                 }
-                resolve({ status: 200, feeds: feedsResponse });
+                resolve(feedsResponse);
             } catch (error) {
-                reject({ error: error });
+                reject(error);
             }
         })();
     });
@@ -79,12 +79,9 @@ exports.postFeed = ({ files, body }) => {
                 let insert_feed_response = await Feed.insertOne(feed);
                 const result_feed = insert_feed_response.ops[0];
                 result_feed.images = urls;
-                resolve({
-                    status: 200,
-                    result_feed
-                })
+                resolve(result_feed)
             } catch (error) {
-                reject({ error: error });
+                reject(error);
             }
         })();
     });
@@ -107,9 +104,9 @@ exports.putFeed = ({ feedId, userId, amount }) => {
                     { update: true }
                 );
                 
-                resolve({ status: 200, result: feed });
+                resolve(feed);
             } catch (error) {
-                reject({ error: error });
+                reject(error);
             }
         })()
     });

@@ -20,7 +20,7 @@ module.exports = function(app) {
             res.cookie('user_jwt', response['user']['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
             res.json(response);
         }, error => {
-            res.status(error.code).json({ code: error.code, info: 'error', error: error });
+            res.status(error.status).json({ code: error.status, info: 'error', error: error });
         });
     });
 
@@ -30,14 +30,14 @@ module.exports = function(app) {
             password: req.body.password
         }).then((response) => {
             res.cookie('user_jwt', response['user']['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
-            res.send(response);
+            res.json(response);
         }, error => {
-            res.status(error.code).json({ code: error.code, info: 'error', error: error });
+            res.status(error.status).json({ code: error.status, info: 'error', error: error });
         });
     });
 
     app.get('/testCookieJwt', verifyToken, function(req, res) {
-        console.log(req.cookies.user_jwt);
-        res.status(200).send(req.userId);
+        //console.log(req.cookies.user_jwt);
+        res.status(200).send({ code: 200, info: `Authorized ${req.userId}` });
     });
 }
