@@ -17,8 +17,9 @@ module.exports = function(app) {
             password: req.body.password, 
             roles: req.body.roles
         }).then((response) => {
-            res.cookie('user_jwt', response['user']['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
-            res.json(response);
+            res.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
+            delete response['accessToken'];
+            res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
             res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
@@ -29,9 +30,11 @@ module.exports = function(app) {
             username: req.body.username, 
             password: req.body.password
         }).then((response) => {
-            res.cookie('user_jwt', response['user']['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
-            res.json(response);
+            res.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
+            delete response['accessToken'];
+            res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
+            console.log(error.message);
             res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
     });
