@@ -1,6 +1,12 @@
-const db = require('../server/db');
-const Feed = db.database.collection('Feed');
-const Image = db.database.collection('Image');
+const crypto    = require('crypto');
+const path      = require('path');
+const db        = require('../server/db');
+const Feed      = db.database.collection('Feed');
+const Image     = db.database.collection('Image');
+
+exports.createFileURL = (filename) => {
+    return crypto.randomBytes(16).toString("hex") + path.extname(filename);
+}
 
 exports.imageDownloadPromises = (fileId, bucketName) => {
     let bucket = new db.mongodb.GridFSBucket(db.database, {

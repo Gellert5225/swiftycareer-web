@@ -12,7 +12,7 @@ checkDuplicateUser = (req, res, next) => {
         username: req.body.username
     }).then(user => {
         if (user) {
-            res.status(400).send({ message: 'Username already exists!' });
+            res.status(400).send({ code: 400, info: 'error', error: 'Username already exists!' });
             return;
         }
 
@@ -20,17 +20,17 @@ checkDuplicateUser = (req, res, next) => {
             email: req.body.email
         }).then(user => {
             if (user) {
-                res.status(400).send({ message: 'Email already exists!' });
+                res.status(400).send({ code: 400, info: 'error', error: 'Email alreay exists!' });
                 return;
             }
 
             next();
         }, err => {
-            res.status(500).send({ message: err });
+            res.status(500).send({ code: 500, info: 'error', error: err });
             return;
         })
     }, err => {
-        res.status(500).send({ message: err });
+        res.status(500).send({ code: 500, info: 'error', error: err });
         return;
     });
 }
@@ -40,7 +40,7 @@ checkRoleExisted = (req, res, next) => {
 
     roles.forEach(role => {
         if (!ROLES.includes(role)) {
-            res.status(400).send({ message: `Role ${role} does not exist` });
+            res.status(400).send({ code: 500, info: 'error', error: `Role ${role} does not exist` });
             return;
         }
     });

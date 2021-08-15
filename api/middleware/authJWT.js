@@ -11,6 +11,7 @@ const Role  = db.role;
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 verifyToken = (req, res, next) => {
+    console.log(req.cookies);
     let token = req.cookies.user_jwt;
     if (!token) {
         return res.status(403).json({ code: 403, info: 'No Token Provided', error: { name: "NoTokenProvided", message: "No Token Provided" } });

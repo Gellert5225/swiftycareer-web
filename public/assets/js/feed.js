@@ -153,9 +153,8 @@ $(document).ready(function() {
     console.log("Page loaded");
     let img = $('#postFeed-profileImg');
     let navnarProfileImg = $('#navbarProfileImage');
-    const img_data = btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])));
-    img.attr('src', 'data:image/png;base64,' + img_data);
-    navnarProfileImg.attr('src', 'data:image/png;base64,' + img_data);
+    img.attr('src', `/api/files/${currentUser['profile_picture']}`);
+    navnarProfileImg.attr(`/api/files/${currentUser['profile_picture']}`);
 
     $.ajax({
         type: 'get',
@@ -206,7 +205,7 @@ function generateFeedHTML(feedIndex, feed) {
         <div class="card feed-card" id="feed-card${feedIndex}" data-feedId="${feed._id}" style="width: auto;">
             <div class="card-body feed-card-body">
                 <div style="display: inline-block; width: 80%;">
-                    <img id="feed-card-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(feed.author['profile_pic']['data'])))}">
+                    <img id="feed-card-profileImg" src="/api/files/${feed.author.profile_picture}">
                     <h5 class="card-title feed-card-username">${feed.author.display_name}</h5>
                     <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.bio}</h6>
                     <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}">${calculateTimeStamp(feed.created_at)}</p>
@@ -282,7 +281,7 @@ function generateFeedHTML(feedIndex, feed) {
             <div id="commentSection${feedIndex}" class="commentSection">
                 <hr class="feed-card-divider">
                 <div id="postCommentWrapper">
-                    <img id="comment-profileImg" src="data:image/jpeg;base64,${btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])))}">
+                    <img id="comment-profileImg" src="/api/files/${currentUser['profile_picture']}">
                     <form class="commentTextForm" id="commentTextForm${feedIndex}" method="POST" action="/feed/${feed._id}/comments">
                         <textarea placeholder="Write your comment..." name="commentText" class="commentTextArea" id="commentTextArea${feedIndex}" oninput="auto_grow(this)" onkeypress="postComment(event)"></textarea>
                     </form>

@@ -25,7 +25,8 @@ function signUp(event) {
             email: result['user']['email'],
             display_name: result['user']['display_name'],
             bio: result['user']['bio'],
-            roles: result['user']['roles']
+            roles: result['user']['roles'],
+            profile_picture: result['user']['profile_picture']
         }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -60,7 +61,7 @@ function signIn(event) {
             display_name: result['user']['display_name'],
             bio: result['user']['bio'],
             roles: result['user']['roles'],
-            profile_pic: result['user']['profile_pic']
+            profile_picture: result['user']['profile_picture']
         }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {

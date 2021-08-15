@@ -35,7 +35,7 @@ exports.signUp = (user) => {
                 let insert_user_response = await User.insertOne(user);
                 const result_user = insert_user_response.ops[0];
                 var token = jwt.sign({ id: result_user._id }, process.env.JWT_SECRET, {
-                    expiresIn: 30
+                    expiresIn: 60
                 });
                 resolve({ 
                     status: 200, 
@@ -46,10 +46,12 @@ exports.signUp = (user) => {
                         bio: result_user.bio,
                         position: result_user.position,
                         roles: result_user.roles, 
-                        accessToken: token 
+                        accessToken: token,
+                        profile_picture: "9153598f6891968d494b1e7f30c35142.png"
                     } 
                 });
             } catch (error) {
+                console.log(error.message);
                 reject({ status: 500, message: error.message });
             }
         })();
@@ -63,12 +65,10 @@ exports.signIn = ({ username, password }) => {
                 let user = await User.findOne({ username: username });
                 if (!user) { reject({ status: 404, message: 'Username does not exist!' }); return; }
 
-                const profile_pic = await fileUtil.imageDownloadPromises(user.profile_picture, 'profileImages');
-
                 let bcrypt_res = await bcrypt.compare(password, user.hashed_password);
                 if (!bcrypt_res) { reject({ status: 401, error: 'Invalid Password' }); return; }
                 var token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-                    expiresIn: 30
+                    expiresIn: 60
                 });
                 resolve({ 
                     status: 200, 
@@ -80,7 +80,7 @@ exports.signIn = ({ username, password }) => {
                         position: user.position,
                         roles: user.roles, 
                         accessToken: token,
-                        profile_pic: profile_pic
+                        profile_picture: user.profile_picture
                     } 
                 });
             } catch (error) {

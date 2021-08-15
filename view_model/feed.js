@@ -18,14 +18,13 @@ exports.getFeeds = () => {
                 for (var feed of feeds) {
                     try {
                         const user = await User.findOne({ _id: db.mongodb.ObjectID(feed.author_id) });
-                        const profile_pic = await fileUtil.imageDownloadPromises(user.profile_picture, 'profileImages');
                         feed.author = {
                             username: user.username,
                             display_name: user.display_name,
                             bio: user.bio,
                             position: user.position,
                             roles: user.roles,
-                            profile_pic: profile_pic
+                            profile_picture: user.profile_picture
                         };
                         feedsResponse.push(feed);
                     } catch (error) {
@@ -47,8 +46,7 @@ exports.postFeed = ({ files, body }) => {
             try {
                 let urls = [];
                 for (file of files) {
-                    const buffer = crypto.randomBytes(16); 
-                    file.url = buffer.toString("hex") + path.extname(file.originalname);
+                    file.url = fileUtil.createFileURL(file.originalname);
                     urls.push(file.url);
 
                     const image = {
