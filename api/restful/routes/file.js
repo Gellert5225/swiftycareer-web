@@ -14,7 +14,7 @@ module.exports = (app) => {
                 });
                 res.status(200).end(img); 
             } catch (error) {
-                res.status(500).json({ status: 500, message: error.message });
+                res.status(500).json({ code: 500, info: 'error', error: error.message });
             }
         }, error => {
             res.status(error.status).json({ code: error.status, info: 'error', error: error.message });

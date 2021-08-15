@@ -36,7 +36,7 @@ exports.loadImageFromURL = (url) => {
             try {
                 const image = await Image.findOne({ 'url': url });
                 if (!image) {
-                    reject({ code: 404, info: 'error', error: "Image Not Found" });
+                    reject({ status: 404, message: "Image Not Found" });
                     return;
                 }
                 resolve(image.buffer);

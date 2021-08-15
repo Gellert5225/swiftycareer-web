@@ -19,6 +19,7 @@ exports.getFeeds = () => {
                     try {
                         const user = await User.findOne({ _id: db.mongodb.ObjectID(feed.author_id) });
                         feed.author = {
+                            _id: user._id,
                             username: user.username,
                             display_name: user.display_name,
                             bio: user.bio,

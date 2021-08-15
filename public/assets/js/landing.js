@@ -20,13 +20,13 @@ function signUp(event) {
     .done(function(result) {
         console.log(result);
         window.localStorage.setItem('currentUser', JSON.stringify({
-            _id: result['user']['_id'],
-            username: result['user']['username'],
-            email: result['user']['email'],
-            display_name: result['user']['display_name'],
-            bio: result['user']['bio'],
-            roles: result['user']['roles'],
-            profile_picture: result['user']['profile_picture']
+            _id: result['info']['_id'],
+            username: result['info']['username'],
+            email: result['info']['email'],
+            display_name: result['info']['display_name'],
+            bio: result['info']['bio'],
+            roles: result['info']['roles'],
+            profile_picture: result['info']['profile_picture']
         }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -55,13 +55,13 @@ function signIn(event) {
     })
     .done(function(result) {
         window.localStorage.setItem('currentUser', JSON.stringify({
-            _id: result['user']['_id'],
-            username: result['user']['username'],
-            email: result['user']['email'],
-            display_name: result['user']['display_name'],
-            bio: result['user']['bio'],
-            roles: result['user']['roles'],
-            profile_picture: result['user']['profile_picture']
+            _id: result['info']['_id'],
+            username: result['info']['username'],
+            email: result['info']['email'],
+            display_name: result['info']['display_name'],
+            bio: result['info']['bio'],
+            roles: result['info']['roles'],
+            profile_picture: result['info']['profile_picture']
         }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
@@ -70,9 +70,3 @@ function signIn(event) {
         console.log(errorThrown);
     })
 }
-
-$(document).ready(function() {
-    const img_data = btoa(String.fromCharCode(...new Uint8Array(currentUser['profile_pic']['data'])));
-    console.log($('#navbarProfileImage'));
-    $('#navbarProfileImage').attr('src', 'data:image/png;base64,' + img_data);
-})

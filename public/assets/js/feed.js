@@ -164,18 +164,15 @@ $(document).ready(function() {
     .done(function(result) {
         console.log(result);
         if (result.error) {
-            console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
+            console.log('ERROR! ' + result.code + ' ' + result.error);
         } else {
             feeds = result.info;
-            console.log(feeds[0].images);
             popUpPage();
         }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log('error when getting feeds');
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(errorThrown);
+        console.log('ERROR! Status ' + jqXHR.responseJSON.code + ', ' + jqXHR.responseJSON.error);
     })
 });
 
@@ -361,9 +358,8 @@ function postFeed(event) {
         }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(errorThrown);
+        console.log('error posting feed');
+        console.log('ERROR! Status ' + jqXHR.responseJSON.code + ', ' + jqXHR.responseJSON.error);
     })
 }
 
