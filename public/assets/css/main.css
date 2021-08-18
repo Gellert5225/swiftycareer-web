@@ -66,3 +66,11 @@
 #rightCol {
   padding: 0px;
 }
+
+.alert {
+    margin-bottom: 0;
+}
+
+.alert p {
+    display: inline;
+}

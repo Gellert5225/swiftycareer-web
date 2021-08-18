@@ -17,7 +17,7 @@ module.exports = function(app) {
             password: req.body.password, 
             roles: req.body.roles
         }).then((response) => {
-            res.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
+            res.session.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
             delete response['accessToken'];
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
@@ -34,9 +34,14 @@ module.exports = function(app) {
             delete response['accessToken'];
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
-            console.log(error.message);
+            req.flash('authError', error.message);
             res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
+    });
+
+    app.post('/api/rest/auth/signout', function(req, res) {
+        res.clearCookie('user_jwt');
+        res.status(200).json({ code: 200, info: 'Signed Out', error: null });
     });
 
     app.get('/testCookieJwt', verifyToken, function(req, res) {

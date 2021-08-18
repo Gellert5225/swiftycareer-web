@@ -11,18 +11,41 @@ const Role  = db.role;
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 verifyToken = (req, res, next) => {
-    console.log(req.cookies);
     let token = req.cookies.user_jwt;
+    
     if (!token) {
-        return res.status(403).json({ code: 403, info: 'No Token Provided', error: { name: "NoTokenProvided", message: "No Token Provided" } });
+        req.flash('authError', 'Please login to access the content you requested.');
+        if (req.accepts('html')) {
+            if (req.originalUrl === '/') { res.render('landing'); } 
+            else { res.redirect('/') }
+            return;
+        }
+        return res.status(403).json({ code: 401, info: 'No Token Provided', error: 'Please login to access the content you requested.' });
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-            return res.status(401).json({ code: 401, info: 'Unauthorized', error: "Invalid JWT token. Please login again." });
+            req.flash('authError', 'Invalid JWT token. Please login again.');
+            if (req.accepts('html')) {
+                if (req.originalUrl === '/') { res.render('landing'); }
+                else { res.redirect('/') }
+                return;
+            }
+            return res.status(401).json({ code: 403, info: 'Unauthorized', error: "Invalid JWT token. Please login again." });
         }
         req.userId = decoded.id;
         next();
+    });
+}
+
+function decodeToken(token) {
+    if (!token) {
+        return null;
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) return null;
+        return decoded;
     });
 }
 

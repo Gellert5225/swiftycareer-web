@@ -1,3 +1,7 @@
+// $(document).ready(function() {
+//     window.location.replace("/");
+// });
+
 function signUp(event) {
     event.preventDefault();
     const username = $('#signupform').find('#username').val();
@@ -33,6 +37,13 @@ function signUp(event) {
         console.log(jqXHR);
         console.log(textStatus);
         console.log(errorThrown);
+        var html = ` 
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> ${jqXHR.responseJSON.error}.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        $(html).insertAfter('#signupModal-header');
     })
 }
 
@@ -54,19 +65,31 @@ function signIn(event) {
         contentType: 'application/json'
     })
     .done(function(result) {
-        window.localStorage.setItem('currentUser', JSON.stringify({
-            _id: result['info']['_id'],
-            username: result['info']['username'],
-            email: result['info']['email'],
-            display_name: result['info']['display_name'],
-            bio: result['info']['bio'],
-            roles: result['info']['roles'],
-            profile_picture: result['info']['profile_picture']
-        }));
+        if (!result.error) {
+            console.log('login successful');
+            window.location.replace("/feed");
+            window.localStorage.setItem('currentUser', JSON.stringify({
+                _id: result['info']['_id'],
+                username: result['info']['username'],
+                email: result['info']['email'],
+                display_name: result['info']['display_name'],
+                bio: result['info']['bio'],
+                roles: result['info']['roles'],
+                profile_picture: result['info']['profile_picture']
+            }));
+        }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
         console.log(textStatus);
         console.log(errorThrown);
+        var html = ` 
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> ${jqXHR.responseJSON.error}.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        `;
+        $(html).insertAfter('#loginModal-header');
+        //window.location.replace("/");
     })
 }

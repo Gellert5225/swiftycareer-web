@@ -2,7 +2,7 @@ const { verifyToken }           = require('../../middleware/authJWT');
 const feedViewModel             = require('../../../view_model/feed');
 
 module.exports = function(app, upload) {
-    app.get('/feeds', function(req, res) {
+    app.get('/feeds', verifyToken, function(req, res) {
         feedViewModel.getFeeds().then(result => {
             res.status(200).json({ code: 200, info: result, error: null });
         }, error => {
@@ -11,7 +11,7 @@ module.exports = function(app, upload) {
         });
     });
 
-    app.get('/feed', function(req, res) {
+    app.get('/feed', verifyToken, function(req, res) {
         res.render('feed');
     });
 

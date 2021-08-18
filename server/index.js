@@ -2,6 +2,8 @@ const express         = require('express');
 const methodOverride  = require('method-override');
 const cors            = require('cors');
 const path            = require('path');
+const flash           = require('connect-flash');
+const session         = require('express-session');
 const cookieParser    = require('cookie-parser');
 const db              = require('./db.js');
 const { graphqlHTTP } = require('express-graphql');
@@ -24,11 +26,18 @@ app.use('/public', express.static(path.join(__dirname, '../public')));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use(cookieParser());
 app.use(methodOverride('_method'));
+app.use(cookieParser());
+app.use(session({
+    secret: "Shh, its a secret!",
+    saveUninitialized: false,
+    resave: false,
+}));
+app.use(flash());
 
-app.get('/', (req, res) => {
-    res.status(200).render('landing');
+app.use(function(req, res, next) {
+    res.locals.authError = req.flash('authError');
+    next();
 });
 
 db.connect().then(result => {

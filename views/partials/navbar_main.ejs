@@ -36,12 +36,7 @@
             <li><a class="dropdown-item navbar-profileDropdownItem" href="#">Activity</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item navbar-profileDropdownItem" href="#">Settings</a></li>
-            <li>
-              <form id="myForm" method="POST" action="/logout">
-                <input type="hidden" name="name" value="value" /> 
-                <a class="dropdown-item navbar-profileDropdownItem" href="/logout" id="logout_link">Log Out</a>
-              </form>
-            </li>
+            <li><a class="dropdown-item navbar-profileDropdownItem" href="" id="logout_link">Log Out</a></li>
           </ul>
         </div>
       </li>
@@ -60,10 +55,28 @@
     img.src = "../../public/assets/images/" + selectedImageName
   }
   
-  jQuery("#logout_link").click(function(e){
-      window.location = $(this).attr('href');
-      e.preventDefault();
-    });
+jQuery("#logout_link").click(function(e){
+      //window.location = $(this).attr('href');
+    e.preventDefault();
+    $.ajax({
+        type: "post",
+        url: '/api/rest/auth/signout',
+        contentType: false
+    })
+    .done(function(result) {
+        console.log(result);
+        if (result.error) {
+            console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
+        } else {
+          window.location.replace("/");
+          window.localStorage.clear();
+        }
+    })
+    .fail(function(jqXHR, textStatus, errorThrown) {
+        console.log('error signing out');
+        console.log(jqXHR);
+    })
+});
   
   $(function() {
     $('.navbar-li-main a[href^="/' + location.pathname.split("/")[1] + '"]').parent().addClass('active');

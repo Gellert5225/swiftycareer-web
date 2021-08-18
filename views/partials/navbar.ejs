@@ -14,13 +14,10 @@
 <div class="modal fade" id="loginModal" tabindex="-1" data-backdrop="true" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" id="loginModal-header">
         <h5 class="modal-title" id="loginLabel">Login</h5>
       </div>
       <div class="modal-body">
-        <div class="container">
-
-        </div>
         <form id="loginform" onsubmit="signIn(event)">
           <div class="form-group">
             <input type="text" class="form-control form-control-login" name="username" id="username" placeholder="Username">
@@ -29,7 +26,7 @@
             <input type="password" class="form-control form-control-login" name="password" id="password" placeholder="Password">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary login-close" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary login-close" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary login-btn">Login</button>
           </div>
         </form>
@@ -41,13 +38,10 @@
 <div class="modal fade" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <div class="modal-header">
+      <div class="modal-header" id="signupModal-header">
         <h5 class="modal-title" id="signupLabel">Sign Up</h5>
       </div>
       <div class="modal-body">
-        <div class="container">
-          
-        </div>
         <form id="signupform" onsubmit="signUp(event)">
           <div class="form-group">
             <input type="text" class="form-control form-control-login" name="username" id="username" placeholder="Username">
@@ -62,7 +56,7 @@
             <input type="password" class="form-control form-control-login" name="password-confirm" id="password-confirm" placeholder="Confirm Password">
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary login-close" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-secondary login-close" data-bs-dismiss="modal">Close</button>
             <button type="submit" class="btn btn-primary login-btn">Sign Up</button>
           </div>
         </form>
