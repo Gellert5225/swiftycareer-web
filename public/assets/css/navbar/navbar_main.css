@@ -126,6 +126,7 @@
 
     .navbar-brand-main {
         margin-top: -5px;
+        margin-right: 0px !important;
     }
     
     .navbar-brand-main img {
@@ -154,8 +155,8 @@
 
 @media only screen and (max-width : 419px) {
     .navbar-li-main {
-        padding-left: 5px;
-        padding-right: 5px;
+        padding-left: 30px;
+        padding-right: 0px;
     }
 
     .navbar-ul-main {
@@ -165,5 +166,12 @@
     .navbar-li-main a{
         margin-left: 0px;
         padding: 0px 0px;
+    }
+}
+
+@media only screen and (max-width : 334px) {
+    .navbar-li-main {
+        padding-left: 25px;
+        padding-right: 0px;
     }
 }
