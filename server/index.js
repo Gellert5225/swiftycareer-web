@@ -14,7 +14,7 @@ const app = express();
 require('dotenv').config({ path: `${__dirname }/.env.${process.env.NODE_ENV}` })
 
 var corsOptions = {
-    origin: "http://localhost:1336",
+    origin: "*",
     credentials: true 
 };
   
