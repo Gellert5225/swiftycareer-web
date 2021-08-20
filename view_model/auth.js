@@ -129,8 +129,11 @@ exports.refreshJWT = (session_id) => {
                 const accessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, { expiresIn: 60 });
                 resolve(accessToken);
             } catch (error) {
-                await this.signOut(session_id);
-                console.log(error);
+                try {
+                    await this.signOut(session_id);
+                } catch (error) {
+                    reject({ status: 500, message: error.message });
+                }
                 reject({ status: 403, message: error.message === 'jwt expired' ? 'Session expired. Please sign in again.' : error.message });
             }
         })()
