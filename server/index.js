@@ -13,12 +13,12 @@ const app = express();
 
 require('dotenv').config({ path: `${__dirname }/.env.${process.env.NODE_ENV}` })
 
-var corsOptions = {
-    origin: "*",
-    credentials: true 
-};
+// var corsOptions = {
+//     origin: "*",
+//     credentials: true 
+// };
   
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
 
 // setup front-end view engine
 app.set('view engine', 'ejs');
