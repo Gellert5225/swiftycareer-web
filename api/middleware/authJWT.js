@@ -5,6 +5,8 @@
 
 const jwt   = require('jsonwebtoken');
 const db    = require('../../server/db');
+const request = require('../../server/request');
+const { refreshJWT } = require('../../view_model/auth');
 const User  = db.user;
 const Role  = db.role;
 
@@ -12,7 +14,6 @@ require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
 verifyToken = (req, res, next) => {
     let token = req.cookies.user_jwt;
-    
     if (!token) {
         req.flash('authError', 'Please login to access the content you requested.');
         if (req.accepts('html')) {
@@ -20,18 +21,13 @@ verifyToken = (req, res, next) => {
             else { res.redirect('/') }
             return;
         }
-        return res.status(403).json({ code: 401, info: 'No Token Provided', error: 'Please login to access the content you requested.' });
+        return res.status(401).json({ code: 401, info: 'No Token Provided', error: 'Please login to access the content you requested.' });
     }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
-            req.flash('authError', 'Invalid JWT token. Please login again.');
-            if (req.accepts('html')) {
-                if (req.originalUrl === '/') { res.render('landing'); }
-                else { res.redirect('/') }
-                return;
-            }
-            return res.status(401).json({ code: 403, info: 'Unauthorized', error: "Invalid JWT token. Please login again." });
+            req.session.prevURL = req.originalUrl;
+            return res.redirect('/api/auth/refreshJWT');
         }
         req.userId = decoded.id;
         next();

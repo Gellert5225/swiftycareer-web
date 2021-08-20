@@ -2,13 +2,14 @@
  * Handles the authentication - User SignUp and SignIn
  */
 
-const db   = require('../server/db');
-const User = db.database.collection('User');
-const Role = db.database.collection('Role');
-const fileUtil = require('./file_util');
+const fileUtil  = require('./file_util');
+const db        = require('../server/db');
+const User      = db.database.collection('User');
+const Role      = db.database.collection('Role');
+const Session   = db.database.collection('Session');
 
-var jwt    = require('jsonwebtoken');
-var bcrypt = require('bcryptjs');
+const jwt    = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
@@ -31,12 +32,16 @@ exports.signUp = (user) => {
                 user.display_name = user.username;
                 user.bio = '';
                 user.position = '';
+                user.profile_picture = '9153598f6891968d494b1e7f30c35142.png';
 
-                let insert_user_response = await User.insertOne(user);
+                const insert_user_response = await User.insertOne(user);
                 const result_user = insert_user_response.ops[0];
-                var token = jwt.sign({ id: result_user._id }, process.env.JWT_SECRET, {
-                    expiresIn: 60
-                });
+                const token = jwt.sign({ id: result_user._id }, process.env.JWT_SECRET, { expiresIn: 60 });
+                const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: parseInt(process.env.JWT_REFRESH_EXP) });
+                const session = { refreshToken: refreshToken, user: user._id, expires_at: new Date().toString() };
+                const session_response = await Session.insertOne(session);
+                const session_result = session_response.ops[0];
+
                 resolve({ 
                     _id: result_user._id, 
                     username: result_user.username, 
@@ -45,6 +50,8 @@ exports.signUp = (user) => {
                     position: result_user.position,
                     roles: result_user.roles, 
                     accessToken: token,
+                    refreshToken: refreshToken,
+                    session_id: session_result._id,
                     profile_picture: "9153598f6891968d494b1e7f30c35142.png"
                 } );
             } catch (error) {
@@ -64,9 +71,17 @@ exports.signIn = ({ username, password }) => {
 
                 let bcrypt_res = await bcrypt.compare(password, user.hashed_password);
                 if (!bcrypt_res) { reject({ status: 401, message: 'Invalid Password' }); return; }
-                var token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-                    expiresIn: 60
-                });
+                const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 60 });
+                const refreshToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: parseInt(process.env.JWT_REFRESH_EXP) });
+                const session = { 
+                    refreshToken: refreshToken,
+                    user: user._id, 
+                    created_at: new Date(Date.now()).toUTCString(),
+                    expires_at: new Date(Date.now() + process.env.JWT_REFRESH_EXP * 1000).toUTCString()
+                };
+                const session_response = await Session.insertOne(session);
+                const session_result = session_response.ops[0];
+
                 resolve({ 
                     _id: user._id, 
                     username: user.username, 
@@ -75,11 +90,49 @@ exports.signIn = ({ username, password }) => {
                     position: user.position,
                     roles: user.roles, 
                     accessToken: token,
+                    refreshToken: refreshToken,
+                    session_id: session_result._id,
                     profile_picture: user.profile_picture
                 });
             } catch (error) {
                 reject({ status: 500, message: error.message });
             }
         })();
+    });
+}
+
+exports.signOut = (session_id) => {
+    return new Promise((resolve, reject) => {
+        (async () => {
+            try {
+                const session = await Session.deleteOne({ _id: db.mongodb.ObjectID(session_id) });
+                if (session.deletedCount === 1) {
+                    resolve();
+                } else {
+                    reject({ status: 500, message: `Could not find session id: ${session_id}` });
+                }
+                resolve();
+            } catch (error) {
+                reject({ status: 500, message: error.message });
+            }
+        })()
+    })
+}
+
+exports.refreshJWT = (session_id) => {
+    return new Promise((resolve, reject) => {
+        (async () => {
+            try {
+                const session = await Session.findOne({ _id: db.mongodb.ObjectID(session_id) });
+                // verify refresh token
+                const decoded = jwt.verify(session.refreshToken, process.env.JWT_SECRET);
+                const accessToken = jwt.sign({ id: decoded.id }, process.env.JWT_SECRET, { expiresIn: 60 });
+                resolve(accessToken);
+            } catch (error) {
+                await this.signOut(session_id);
+                console.log(error);
+                reject({ status: 403, message: error.message === 'jwt expired' ? 'Session expired. Please sign in again.' : error.message });
+            }
+        })()
     });
 }
