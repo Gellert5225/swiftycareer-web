@@ -1,5 +1,6 @@
 const authRoute = require('./auth');
 const feedRoute = require('./feed');
+const jobRoute  = require('./job');
 const fileRoute = require('./file');
 const { verifyToken } = require('../../middleware/authJWT');
 
@@ -15,4 +16,5 @@ module.exports = function(app) {
     authRoute(app);
     fileRoute(app);
     feedRoute(app, upload);
+    jobRoute(app);
 }

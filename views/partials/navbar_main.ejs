@@ -12,17 +12,17 @@
         </a>
       </li>
       <li class="navbar-li navbar-li-main" data-value1="job.png" data-value2="job-selected.png">
-        <a href="/jobs">
+        <a href="/job">
           <img src="../../public/assets/images/job.png" id="itemImg">
         </a>
       </li>
       <li class="navbar-li navbar-li-main" data-value1="friend.png" data-value2="friend-selected.png">
-        <a href="/connections">
+        <a href="/connection">
           <img src="../../public/assets/images/friend.png" id="itemImg">
         </a>
       </li>
       <li class="navbar-li navbar-li-main" data-value1="alert.png" data-value2="alert-selected.png">
-        <a href="/notifications">
+        <a href="/notification">
           <img src="../../public/assets/images/alert.png" id="itemImg">
         </a>
       </li>
@@ -56,32 +56,44 @@
     var img = a.getElementsByTagName("img");
     img.src = "../../public/assets/images/" + selectedImageName
   }
+
+  $(document).ready(function() {
+    const currentUser = JSON.parse(window.localStorage.getItem('currentUser'));
+    let img = $('#postFeed-profileImg');
+    let navbarProfileImg = $('#navbarProfileImage');
+    let navbarProfileName = $('#navbar-profileDropdownUsername');
+    img.attr('src', `/api/files/${currentUser['profile_picture']}`);
+    navbarProfileImg.attr('src', `/api/files/${currentUser['profile_picture']}`);
+    navbarProfileName.text(currentUser['display_name']);
+  })
   
-jQuery("#logout_link").click(function(e){
-      //window.location = $(this).attr('href');
+  jQuery("#logout_link").click(function(e){
+    //window.location = $(this).attr('href');
     e.preventDefault();
     $.ajax({
-        type: "post",
-        url: '/api/rest/auth/signout',
-        contentType: false
+      type: "post",
+      url: '/api/rest/auth/signout',
+      contentType: false
     })
     .done(function(result) {
-        console.log(result);
-        if (result.error) {
-            console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
-        } else {
-          window.location.replace("/");
-          window.localStorage.clear();
-        }
+      console.log(result);
+      if (result.error) {
+        console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
+      } else {
+        window.location.replace("/");
+        window.localStorage.clear();
+      }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log('error signing out');
-        console.log(jqXHR);
+      console.log('error signing out');
+      console.log(jqXHR);
     })
-});
+  });
   
   $(function() {
     $('.navbar-li-main a[href^="/' + location.pathname.split("/")[1] + '"]').parent().addClass('active');
     $('.navbar-li-main.active').find("img").attr("src", "../../public/assets/images/" + $('.navbar-li-main.active').data("value2"));
   });
+
+
 </script>

@@ -150,13 +150,13 @@ var newCommentIndex = -1;
 var newFeedIndex = -1;
 
 $(document).ready(function() {
-    console.log("Page loaded");
-    let img = $('#postFeed-profileImg');
-    let navbarProfileImg = $('#navbarProfileImage');
-    let navbarProfileName = $('#navbar-profileDropdownUsername');
-    img.attr('src', `/api/files/${currentUser['profile_picture']}`);
-    navbarProfileImg.attr('src', `/api/files/${currentUser['profile_picture']}`);
-    navbarProfileName.text(currentUser['display_name']);
+    // console.log("Page loaded");
+    // let img = $('#postFeed-profileImg');
+    // let navbarProfileImg = $('#navbarProfileImage');
+    // let navbarProfileName = $('#navbar-profileDropdownUsername');
+    // img.attr('src', `/api/files/${currentUser['profile_picture']}`);
+    // navbarProfileImg.attr('src', `/api/files/${currentUser['profile_picture']}`);
+    // navbarProfileName.text(currentUser['display_name']);
 
     $.ajax({
         type: 'get',
