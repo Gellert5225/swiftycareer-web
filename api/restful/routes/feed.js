@@ -27,10 +27,22 @@ module.exports = function(app, upload) {
     });
 
     app.put('/feeds/:id/likes', function(req, res) {
-        feedViewModel.putFeed({ feedId: req.params.id, userId: req.body.userId, amount: req.body.amount }).then(result => {
+        feedViewModel.putFeed({ feed_id: req.params.id, user_id: req.body.userId, amount: req.body.amount }).then(result => {
             res.status(200).json({ code: 200, info: result, error: null });
         }, error => {
             res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
+    });
+
+    app.post('/feeds/:id/comments', function(req, res) {
+        feedViewModel.postComment({ text: req.body.text, commenter: req.body.commenter, feed_id: req.params.id }).then(result => {
+            res.status(200).json({ code: 200, info: result, error: null });
+        });
+    });
+
+    app.get('/feeds/:id/comments', function(req, res) {
+        feedViewModel.getComments({ feed_id: req.params.id }).then(result => {
+            res.status(200).json({ code: 200, info: result, error: null });
+        })
     });
 }

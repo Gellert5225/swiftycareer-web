@@ -414,7 +414,7 @@ function handleComment(event) {
     if (commentSection.css("display") != "block") {
         commentSection.show();
         $.ajax({                    
-            url: '/feed/' + feedId + '/comments',     
+            url: '/feeds/' + feedId + '/comments',     
             type: 'get',
             dataType: 'json'
         })
@@ -424,7 +424,7 @@ function handleComment(event) {
                 console.log('ERROR! ' + data.error.code + ' ' + data.error.message);
             } else {
                 circularLoader.hide();
-                var comments = data.comments;
+                var comments = data.info;
                 comments.forEach((comment, index) => {
                     commentSection.append(generateCommentHTML(comment, feedIndex, index));
                     var quill = new Quill('#comment-cardTextView' + feedIndex + '-' + index, {
@@ -457,12 +457,12 @@ function generateCommentHTML(comment, feedIndex, commentIndex) {
             ${comment.text}
         </div>
         <div id="comment${feedIndex}-${commentIndex}" class="comment-row">
-            <img id="comment-profileImg" src="${comment.commenter.profilePicture.url}">
+            <img id="comment-profileImg" src="/api/files/${comment.author.profile_picture}">
             <div class="card feed-card comment-card" style="width: auto;">
                 <div class="card-body feed-card-body comment-card-body">
                     <div style="display: inline-block; width: 80%;">
-                        <h5 class="card-title feed-card-username comment-card-username">${comment.commenter.display_name}</h5>
-                        <h6 class="card-subtitle mb-2 feed-card-authorPosition comment-card-authorPosition">${comment.commenter.position}</h6>
+                        <h5 class="card-title feed-card-username comment-card-username">${comment.author.display_name}</h5>
+                        <h6 class="card-subtitle mb-2 feed-card-authorPosition comment-card-authorPosition">${comment.author.position}</h6>
                     </div>
                     <div id="feed-cardTime">
                         <div class="btn-group">
@@ -489,7 +489,7 @@ function postComment(event) {
         const textarea = $(event.target);
         const parent = textarea.parent().parent().parent();
         const circularLoader = parent.find('.circular-loader');
-        const commentText = $.trim(textarea.val());
+        const commentText = $('<div>').text(textarea.val()).html();
         const feedId = parent.parent().attr('data-feedId');
         const feedIndex = parseInt(parent.parent().attr('id')[parent.parent().attr('id').length-1]);
 
@@ -500,9 +500,9 @@ function postComment(event) {
 
             $.ajax({
                 type: "post",
-                url: '/feed/' + feedId + '/comments',
+                url: '/feeds/' + feedId + '/comments',
                 data: {
-                  commentText: commentText,
+                  text: commentText,
                   commenter: currentUser._id
                 }
             })
@@ -520,7 +520,8 @@ function postComment(event) {
                     theme: 'snow'
                 });
                 quill.enable(false);
-                $('#comment-cardTextView' + feedIndex + '-' + newCommentIndex).find('p').append(linkify(data.info.text));
+                quill.root.innerHTML = linkify(data.info.text);
+                //$('#comment-cardTextView' + feedIndex + '-' + newCommentIndex).find('p').append(linkify(data.info.text));
                 newCommentIndex--;
             })
         }
