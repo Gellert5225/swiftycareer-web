@@ -18,133 +18,69 @@
     letter-spacing: 0.5px;
 }
 
-.search-bar {
-    height: 70px;
-    position: relative;
-    padding-left: 10px;
-    padding-top: 2px;
-    padding-bottom: 2px;
-    width: 50%;
-    margin-top: 50px;
+#search_bar {
+    display: flex;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    width: 1000px;
 }
 
-.vl {
-    border-left: 1px solid rgb(73, 80, 87);
-    height: 30px;
+#job-title-form {
+    margin-right: 10px;
 }
 
-#search-form {
-    background-color: white;
-    border-radius: 30px;
+#job-location-form {
+    margin-right: 10px;
 }
 
-.landing-search {
-    vertical-align: middle;
-    margin: 0px;
-    padding-left: 10px;
+.job-search-form-control {
+    color: white;
+    background-color: rgb(32, 37, 53);
+    border: 0px solid rgb(145, 154, 172);
 }
 
-.landing-search-location {
-    padding-left: 0px;
-}
-
-.search-input {
-    letter-spacing: 0.8px;
-    vertical-align: middle;
-    border: none;
-    border-color: rgba(145, 154, 172, 0);
-    -webkit-border-radius: 20px;
-    -moz-border-radius: 20px;
-    border-radius: 20px;
-    vertical-align: middle;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 500;
-    font-size: 17px;
-    background-color: rgba(62, 67, 83, 0);
-    color: rgb(73, 80, 87);
-    margin-bottom: 0px;
-}
-
-.search-input:focus {
-    background-color: rgba(62, 67, 83, 0);
-    color: rgb(73, 80, 87);
-    caret-color: black;
-    border-color: inherit;
-    -webkit-box-shadow: none;
+.job-search-form-control:focus {
+    color: white;
+    background-color: rgb(32, 37, 53);
     box-shadow: none;
+    border: 0px solid rgb(145, 154, 172);
 }
 
-.search-btn {
-    height: 50px;
-    width: 100%;
-    border-radius: 30px;
-    border-width: 0px;
-    text-align: center;
-    margin: auto;
-    float: right;
+.job-search-form-control::placeholder{
+    color: rgb(145, 154, 172);
+  }
+
+.search button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    height: 40px;
+    width: 110px;
+    background: rgb(15, 90, 175);
+    border: none;
 }
 
-.search-btn-wrapper {
-    padding-left: 0px;
-    padding-right: 0px;
+@media (max-width: 1030px) {
+    #search_bar {
+        width: 100%;
+        padding-left: 5%;
+        padding-right: 5%
+    }
+}
+
+@media (max-width: 600px) {
+    #search_bar {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .job-search-form-control {
+        height: 50px;
+    }
 }
 
 @media (max-width:515px) {
     #mission-statement h1 {
         font-size:x-large;
-    }
-    .landing-search {
-        padding-left: 15px;
-    }
-}
-
-@media (max-width:991px) {
-    .vl {
-        display: none;
-    }
-
-    .landing-search-location {
-        padding-left: 15px;
-    }
-
-    .search-btn-wrapper {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .landing-search {
-        padding-left: 15px;
-    }
-
-    #search-form {
-        padding: 10px;
-    }
-}
-
-@media (max-width:414px) {
-    .search-bar {
-        width: 80%;
-        height: 200px;
-        padding-left: 10%;
-        padding-right: 10%;
-    }
-
-    .search-btn-wrapper {
-        padding-left: 10px;
-        padding-right: 10px;
-    }
-
-    .landing-search {
-        padding-left: 15px;
-    }
-
-    #search-form {
-        padding: 10px;
-    }
-}
-
-@media (max-width:1200px) {
-    .search-bar {
-        width: auto;
     }
 }
