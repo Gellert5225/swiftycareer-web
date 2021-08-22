@@ -18,6 +18,8 @@ module.exports = function(app) {
             roles: req.body.roles
         }).then((response) => {
             res.session.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
+            res.cookie('user_jwt_refresh', response['refreshToken'], {maxAge: 10000000000, path: '/api/auth/refreshJWT', secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
+            res.cookie('user_session_id', response['session_id'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
             delete response['accessToken'];
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
@@ -30,9 +32,9 @@ module.exports = function(app) {
             username: req.body.username, 
             password: req.body.password,
         }).then((response) => {
-            res.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
-            res.cookie('user_jwt_refresh', response['refreshToken'], {maxAge: 10000000000, path: '/api/auth/refreshJWT', secure: process.env.NODE_ENV === 'prod', httpOnly: true});
-            res.cookie('user_session_id', response['session_id'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
+            res.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
+            res.cookie('user_jwt_refresh', response['refreshToken'], {maxAge: 10000000000, path: '/api/auth/refreshJWT', secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
+            res.cookie('user_session_id', response['session_id'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
             delete response['accessToken'];
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
@@ -52,7 +54,7 @@ module.exports = function(app) {
 
     app.get('/api/auth/refreshJWT', function(req, res) {
         authentication.refreshJWT(req.cookies.user_session_id).then((response) => {
-            res.cookie('user_jwt', response, {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
+            res.cookie('user_jwt', response, {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
             const prevURL = req.session.prevURL;
             req.session.prevURL = null;
             res.redirect(prevURL);
