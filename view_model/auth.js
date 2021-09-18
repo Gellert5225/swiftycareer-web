@@ -2,7 +2,6 @@
  * Handles the authentication - User SignUp and SignIn
  */
 
-const fileUtil  = require('./file_util');
 const db        = require('../server/db');
 const User      = db.database.collection('User');
 const Role      = db.database.collection('Role');
