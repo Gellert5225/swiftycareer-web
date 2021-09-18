@@ -3,7 +3,7 @@
  * Checking user signIn and signUp criterias
  */
 
-const db = require('../../server/db');
+const db = require('../server/db');
 const ROLES = db.ROLES;
 const User = db.database.collection('User');
 

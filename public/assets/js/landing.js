@@ -22,7 +22,6 @@ function signUp(event) {
         contentType: 'application/json'
     })
     .done(function(result) {
-        console.log(result);
         window.localStorage.setItem('currentUser', JSON.stringify({
             _id: result['info']['_id'],
             username: result['info']['username'],
@@ -34,9 +33,6 @@ function signUp(event) {
         }));
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(errorThrown);
         var html = ` 
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Error!</strong> ${jqXHR.responseJSON.error}.
@@ -66,7 +62,6 @@ function signIn(event) {
     })
     .done(function(result) {
         if (!result.error) {
-            console.log('login successful');
             window.location.replace("/feed");
             window.localStorage.setItem('currentUser', JSON.stringify({
                 _id: result['info']['_id'],
@@ -80,9 +75,6 @@ function signIn(event) {
         }
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
-        console.log(jqXHR);
-        console.log(textStatus);
-        console.log(errorThrown);
         var html = ` 
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong>Error!</strong> ${jqXHR.responseJSON.error}.

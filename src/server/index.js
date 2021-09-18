@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 
 // setup front-end view engine
 app.set('view engine', 'ejs');
-app.use('/public', express.static(path.join(__dirname, '../public')));
+app.use('/public', express.static(path.join(__dirname, '../../public')));
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
@@ -41,7 +41,7 @@ app.use(function(req, res, next) {
 });
 
 db.connect().then(result => {
-    require('../api/restful/routes/index')(app);
+    require('../app.controller')(app);
     init();
 })
 

@@ -1,6 +1,6 @@
-const { verifyRegistration }    = require('../../middleware');
-const { verifyToken }           = require('../../middleware/authJWT');
-const authentication            = require('../../../view_model/auth');
+const { verifyRegistration }    = require('../middleware');
+const { verifyToken }           = require('../middleware/authJWT');
+const authentication            = require('./auth.service');
 
 require('dotenv').config({ path: `${__dirname }/.env.${process.env.NODE_ENV}` })
 
@@ -68,7 +68,6 @@ module.exports = function(app) {
     });
 
     app.get('/testCookieJwt', verifyToken, function(req, res) {
-        //console.log(req.cookies.user_jwt);
         res.status(200).send({ code: 200, info: `Authorized ${req.userId}` });
     });
 }

@@ -1,5 +1,5 @@
 const { Readable }          = require('stream');
-const fileUtil              = require('./file_util');
+const fileUtil              = require('../utils/file_util');
 const db                    = require('../server/db');
 const User                  = db.database.collection('User');
 const Feed                  = db.database.collection('Feed');
@@ -11,27 +11,21 @@ exports.getFeeds = () => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {
-                const feeds = await Feed.find().sort({ created_at: -1 }).toArray();
-                var feeds_response = [];
-                for (var feed of feeds) {
-                    try {
-                        const user = await User.findOne({ _id: db.mongodb.ObjectID(feed.author_id) });
-                        feed.author = {
-                            _id: user._id,
-                            username: user.username,
-                            display_name: user.display_name,
-                            bio: user.bio,
-                            position: user.position,
-                            roles: user.roles,
-                            profile_picture: user.profile_picture
-                        };
-                        feeds_response.push(feed);
-                    } catch (error) {
-                        console.log(error);
-                        reject({ status: 500, message: error.message });
+                const feeds = await Feed.aggregate([
+                    {
+                        $lookup: {
+                            from : "User",
+                            localField: "author_id",
+                            foreignField: "_id",
+                            as : "author"
+                        }
+                    },
+                    {
+                        $project: { "author.hashed_password": 0 }
                     }
-                }
-                resolve(feeds_response);
+                ]).toArray();
+
+                resolve(feeds);
             } catch (error) {
                 reject({ status: 500, message: error.message });
             }
@@ -191,8 +185,6 @@ function imageUploadPromises(files) {
         let bucket = new db.mongodb.GridFSBucket(db.database, {
             bucketName: 'feedImages'
         });
-
-        console.log(file);
 
         const readablePhotoStream = new Readable();
         readablePhotoStream.push(file.buffer);

@@ -1,5 +1,5 @@
-const { verifyToken }           = require('../../middleware/authJWT');
-const feedViewModel             = require('../../../view_model/feed');
+const { verifyToken }   = require('../middleware/authJWT');
+const feedViewModel     = require('./feed.service');
 
 module.exports = function(app, upload) {
     app.get('/feeds', verifyToken, function(req, res) {

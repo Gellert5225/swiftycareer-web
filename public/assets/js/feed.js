@@ -204,9 +204,9 @@ function generateFeedHTML(feedIndex, feed) {
         <div class="card feed-card" id="feed-card${feedIndex}" data-feedId="${feed._id}" style="width: auto;">
             <div class="card-body feed-card-body">
                 <div style="display: inline-block; width: 80%;">
-                    <img id="feed-card-profileImg" src="/api/files/${feed.author.profile_picture}">
-                    <h5 class="card-title feed-card-username">${feed.author.display_name}</h5>
-                    <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.bio}</h6>
+                    <img id="feed-card-profileImg" src="/api/files/${feed.author[0].profile_picture}">
+                    <h5 class="card-title feed-card-username">${feed.author[0].display_name}</h5>
+                    <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author[0].bio}</h6>
                     <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}">${calculateTimeStamp(feed.created_at)}</p>
                 </div>
                 <div id="feed-cardTime">
@@ -339,7 +339,6 @@ function postFeed(event) {
         processData: false
     })
     .done(function(result) {
-        console.log(result);
         if (result.error) {
             console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
         } else {
@@ -392,7 +391,7 @@ function handleLike(event) {
         }
     })
     .done(function(data) {
-        console.log(data);
+        //console.log(data);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -419,7 +418,6 @@ function handleComment(event) {
             dataType: 'json'
         })
         .done(function(data) {
-            console.log(data);
             if (data.error) {
                 console.log('ERROR! ' + data.error.code + ' ' + data.error.message);
             } else {
@@ -507,7 +505,6 @@ function postComment(event) {
                 }
             })
             .done(function(data) {
-                console.log(data);
                 circularLoader.hide();
                 $(generateCommentHTML(data.info, feedIndex, newCommentIndex)).insertAfter(parent.find('form'));
                 var quill = new Quill('#comment-cardTextView' + feedIndex + '-' + newCommentIndex, {
