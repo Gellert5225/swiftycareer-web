@@ -204,9 +204,9 @@ function generateFeedHTML(feedIndex, feed) {
         <div class="card feed-card" id="feed-card${feedIndex}" data-feedId="${feed._id}" style="width: auto;">
             <div class="card-body feed-card-body">
                 <div style="display: inline-block; width: 80%;">
-                    <img id="feed-card-profileImg" src="/api/files/${feed.author[0].profile_picture}">
-                    <h5 class="card-title feed-card-username">${feed.author[0].display_name}</h5>
-                    <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author[0].bio}</h6>
+                    <img id="feed-card-profileImg" src="/api/files/${feed.author.profile_picture}">
+                    <h5 class="card-title feed-card-username">${feed.author.display_name}</h5>
+                    <h6 class="card-subtitle mb-2 feed-card-authorPosition">${feed.author.bio}</h6>
                     <p class="card-subtitle mb-2 feed-timeStamp" id="feed-timeStamp${feedIndex-1}">${calculateTimeStamp(feed.created_at)}</p>
                 </div>
                 <div id="feed-cardTime">
@@ -342,7 +342,7 @@ function postFeed(event) {
         if (result.error) {
             console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
         } else {
-            result.info.author = currentUser;
+            result.info.author = [currentUser];
             $(generateFeedHTML(newFeedIndex, result.info)).insertAfter('#postFeedWrapper');
             var quill = new Quill('#cardTextView' + newFeedIndex, {
                 modules: {
@@ -360,6 +360,7 @@ function postFeed(event) {
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log('error posting feed');
+        console.log(jqXHR);
         console.log('ERROR! Status ' + jqXHR.responseJSON.code + ', ' + jqXHR.responseJSON.error);
     })
 }
