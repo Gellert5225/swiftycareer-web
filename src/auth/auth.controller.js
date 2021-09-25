@@ -17,12 +17,42 @@ module.exports = function(app) {
             password: req.body.password, 
             roles: req.body.roles
         }).then((response) => {
-            res.session.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true});
-            res.cookie('user_jwt_refresh', response['refreshToken'], {maxAge: 10000000000, path: '/api/auth/refreshJWT', secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
-            res.cookie('user_session_id', response['session_id'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
-            delete response['accessToken'];
+            res.cookie(
+                'user_jwt',
+                response['access_token'],
+                {
+                    maxAge: 10000000000,
+                    secure: process.env.NODE_ENV === 'prod',
+                    httpOnly: true
+                }
+            );
+            res.cookie(
+                'user_jwt_refresh',
+                response['refresh_token'],
+                {
+                    maxAge: 10000000000,
+                    path: '/api/auth/refreshJWT',
+                    secure: process.env.NODE_ENV === 'prod',
+                    httpOnly: true,
+                    sameSite: 'lax'
+                }
+            );
+            res.cookie(
+                'user_session_id',
+                response['session_id'],
+                {
+                    maxAge: 10000000000,
+                    secure: process.env.NODE_ENV === 'prod',
+                    httpOnly: true,
+                    sameSite: 'lax'
+                }
+            );
+            delete response['access_token'];
+            delete response['refresh_token'];
+            delete response['hashed_password'];
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
+            if (!error.status) error.status = 500;
             res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
         });
     });
@@ -32,10 +62,40 @@ module.exports = function(app) {
             username: req.body.username, 
             password: req.body.password,
         }).then((response) => {
-            res.cookie('user_jwt', response['accessToken'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
-            res.cookie('user_jwt_refresh', response['refreshToken'], {maxAge: 10000000000, path: '/api/auth/refreshJWT', secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
-            res.cookie('user_session_id', response['session_id'], {maxAge: 10000000000, secure: process.env.NODE_ENV === 'prod', httpOnly: true, sameSite: 'lax'});
-            delete response['accessToken'];
+            res.cookie(
+                'user_jwt',
+                response['access_token'],
+                {
+                    maxAge: 10000000000,
+                    secure: process.env.NODE_ENV === 'prod',
+                    httpOnly: true,
+                    sameSite: 'lax'
+                }
+            );
+            res.cookie(
+                'user_jwt_refresh',
+                response['refresh_token'],
+                {
+                    maxAge: 10000000000,
+                    path: '/api/auth/refreshJWT',
+                    secure: process.env.NODE_ENV === 'prod',
+                    httpOnly: true,
+                    sameSite: 'lax'
+                }
+            );
+            res.cookie(
+                'user_session_id',
+                response['session_id'],
+                {
+                    maxAge: 10000000000,
+                    secure: process.env.NODE_ENV === 'prod',
+                    httpOnly: true,
+                    sameSite: 'lax'
+                }
+            );
+            delete response['access_token'];
+            delete response['refresh_token'];
+            delete response['hashed_password'];
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
             req.flash('authError', error.message);
