@@ -75,25 +75,11 @@ exports.signIn = async ({ username, password }) => {
     return user;
 }
 
-exports.signOut = (session_id) => {
-    return new Promise((resolve, reject) => {
-        (async () => {
-            try {
-                const session = await Session.deleteOne({ _id: db.mongodb.ObjectID(session_id) });
-                if (session.deletedCount === 1) {
-                    resolve();
-                } else {
-                    reject({ status: 500, message: `Could not find session id: ${session_id}` });
-                }
-                resolve();
-            } catch (error) {
-                reject({ status: 500, message: error.message });
-            }
-        })()
-    })
+exports.signOut = async (session_id) => {
+    return await Session.deleteOne({ _id: db.mongodb.ObjectID(session_id) });
 }
 
-exports.refreshJWT = (session_id) => {
+exports.refreshJWT = async (session_id) => {
     return new Promise((resolve, reject) => {
         (async () => {
             try {

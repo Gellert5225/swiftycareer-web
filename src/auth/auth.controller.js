@@ -104,12 +104,19 @@ module.exports = function(app) {
     });
 
     app.post('/api/rest/auth/signout', function(req, res) {
-        authentication.signOut(req.cookies.user_session_id).then((response) => {
+        try {
+            const session = await authentication.signOut(req.cookies.user_session_id);
+            if (session.deletedCount !== 1) {
+                res.status(404).json({ code: 404, info: 'error', error: 'Could not find session id' });
+            }
             res.clearCookie('user_jwt');
             res.clearCookie('user_jwt_refresh', { path: '/api/auth/refreshJWT' });
             res.clearCookie('user_session_id');
             res.status(200).json({ code: 200, info: 'Signed Out', error: null });
-        })
+        } catch (error) {
+            if (!error.status) error.status = 500
+            res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
+        }
     });
 
     app.get('/api/auth/refreshJWT', function(req, res) {
