@@ -103,7 +103,7 @@ module.exports = function(app) {
         });
     });
 
-    app.post('/api/rest/auth/signout', function(req, res) {
+    app.post('/api/rest/auth/signout', async function(req, res) {
         try {
             const session = await authentication.signOut(req.cookies.user_session_id);
             if (session.deletedCount !== 1) {
