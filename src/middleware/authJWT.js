@@ -4,9 +4,9 @@
  */
 
 const jwt   = require('jsonwebtoken');
-const db    = require('../../server/db');
-const request = require('../../server/request');
-const { refreshJWT } = require('../../view_model/auth');
+const db    = require('../server/db');
+const request = require('../server/request');
+const { refreshJWT } = require('../auth/auth.service');
 const User  = db.user;
 const Role  = db.role;
 

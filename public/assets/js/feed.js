@@ -339,11 +339,10 @@ function postFeed(event) {
         processData: false
     })
     .done(function(result) {
-        console.log(result);
         if (result.error) {
             console.log('ERROR! ' + result.error.code + ' ' + result.error.message);
         } else {
-            result.info.author = currentUser;
+            result.info.author = [currentUser];
             $(generateFeedHTML(newFeedIndex, result.info)).insertAfter('#postFeedWrapper');
             var quill = new Quill('#cardTextView' + newFeedIndex, {
                 modules: {
@@ -361,6 +360,7 @@ function postFeed(event) {
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log('error posting feed');
+        console.log(jqXHR);
         console.log('ERROR! Status ' + jqXHR.responseJSON.code + ', ' + jqXHR.responseJSON.error);
     })
 }
@@ -392,7 +392,7 @@ function handleLike(event) {
         }
     })
     .done(function(data) {
-        console.log(data);
+        //console.log(data);
     })
     .fail(function(jqXHR, textStatus, errorThrown) {
         console.log(jqXHR);
@@ -419,7 +419,6 @@ function handleComment(event) {
             dataType: 'json'
         })
         .done(function(data) {
-            console.log(data);
             if (data.error) {
                 console.log('ERROR! ' + data.error.code + ' ' + data.error.message);
             } else {
@@ -507,7 +506,6 @@ function postComment(event) {
                 }
             })
             .done(function(data) {
-                console.log(data);
                 circularLoader.hide();
                 $(generateCommentHTML(data.info, feedIndex, newCommentIndex)).insertAfter(parent.find('form'));
                 var quill = new Quill('#comment-cardTextView' + feedIndex + '-' + newCommentIndex, {

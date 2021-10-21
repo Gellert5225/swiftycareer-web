@@ -4,8 +4,8 @@
   "description": "A GraphQL Server for SwiftyCareer",
   "main": "./server/index.js",
   "scripts": {
-    "start": "NODE_ENV=dev node ./server/index.js",
-    "start-prod": "NODE_ENV=prod node ./server/index.js"
+    "start": "NODE_ENV=dev node ./src/server/index.js",
+    "start-prod": "NODE_ENV=prod node ./src/server/index.js"
   },
   "author": "Gellert Li",
   "license": "ISC",

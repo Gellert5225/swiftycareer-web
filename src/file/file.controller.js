@@ -1,4 +1,4 @@
-const fileUtil = require('../../../view_model/file_util');
+const fileUtil = require('../utils/file_util');
 const path = require('path');
 
 module.exports = (app) => {

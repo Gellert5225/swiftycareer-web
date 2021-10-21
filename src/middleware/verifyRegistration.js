@@ -3,36 +3,26 @@
  * Checking user signIn and signUp criterias
  */
 
-const db = require('../../server/db');
+const db = require('../server/db');
 const ROLES = db.ROLES;
 const User = db.database.collection('User');
 
-checkDuplicateUser = (req, res, next) => {
-    User.findOne({
-        username: req.body.username
-    }).then(user => {
+checkDuplicateUser = async (req, res, next) => {
+    try {
+        const user = await User.findOne({ username: req.body.username });
         if (user) {
             res.status(400).send({ code: 400, info: 'error', error: 'Username already exists!' });
             return;
         }
-
-        User.findOne({
-            email: req.body.email
-        }).then(user => {
-            if (user) {
-                res.status(400).send({ code: 400, info: 'error', error: 'Email alreay exists!' });
-                return;
-            }
-
-            next();
-        }, err => {
-            res.status(500).send({ code: 500, info: 'error', error: err });
+        const email = await User.findOne({ email: req.body.email });
+        if (email) {
+            res.status(400).send({ code: 400, info: 'error', error: 'Email alreay exists!' });
             return;
-        })
-    }, err => {
+        }
+    } catch (error) {
         res.status(500).send({ code: 500, info: 'error', error: err });
         return;
-    });
+    }
 }
 
 checkRoleExisted = (req, res, next) => {

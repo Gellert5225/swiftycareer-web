@@ -1,8 +1,8 @@
-const authRoute = require('./auth');
-const feedRoute = require('./feed');
-const jobRoute  = require('./job');
-const fileRoute = require('./file');
-const { verifyToken } = require('../../middleware/authJWT');
+const authRoute = require('./auth/auth.controller');
+const feedRoute = require('./feed/feed.controller');
+const jobRoute  = require('./job/job.controller');
+const fileRoute = require('./file/file.controller');
+const { verifyToken } = require('./middleware/authJWT');
 
 const multer    = require('multer');
 const storage   = multer.memoryStorage();
