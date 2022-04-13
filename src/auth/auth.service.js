@@ -9,6 +9,7 @@ const Session   = db.database.collection('Session');
 
 const jwt    = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const SCError = require('../utils/Error');
 
 require('dotenv').config({ path: `.env.${process.env.NODE_ENV}` })
 
@@ -50,10 +51,10 @@ exports.signUp = async (user) => {
 
 exports.signIn = async ({ username, password }) => {
     let user = await User.findOne({ username: username });
-    if (!user) { reject({ status: 404, message: 'Username does not exist!' }); return; }
+    if (!user) { throw new SCError(404, 'Username does not exist'); }
 
     let bcrypt_res = await bcrypt.compare(password, user.hashed_password);
-    if (!bcrypt_res) { reject({ status: 401, message: 'Invalid Password' }); return; }
+    if (!bcrypt_res) { throw new SCError(401, 'Invalid Password'); }
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: 60 });
     const refresh_token = jwt.sign(
         { id: user._id },
