@@ -99,11 +99,11 @@ module.exports = function(app) {
             res.status(200).json({ code: 200, info: response, error: null });
         }, error => {
             req.flash('authError', error.message);
-            res.status(error.status).json({ code: error.status, info: 'error', error: error.message });
+            res.status(error.status ?? 400).json({ code: error.status, info: 'error', error: error.message });
         });
     });
 
-    app.post('/api/rest/auth/signout', function(req, res) {
+    app.post('/api/rest/auth/signout', async function(req, res) {
         try {
             const session = await authentication.signOut(req.cookies.user_session_id);
             if (session.deletedCount !== 1) {

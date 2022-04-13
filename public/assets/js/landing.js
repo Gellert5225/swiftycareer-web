@@ -18,8 +18,7 @@ function signUp(event) {
         url: '/api/rest/auth/signup',
         dataType: 'json',
         type: 'post',
-        data: JSON.stringify(data),
-        contentType: 'application/json'
+        data: data
     })
     .done(function(result) {
         window.localStorage.setItem('currentUser', JSON.stringify({
@@ -57,8 +56,7 @@ function signIn(event) {
         url: '/api/rest/auth/signIn',
         dataType: 'json',
         type: 'post',
-        data: JSON.stringify(data),
-        contentType: 'application/json'
+        data: data
     })
     .done(function(result) {
         if (!result.error) {
