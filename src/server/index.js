@@ -30,7 +30,8 @@ app.use(methodOverride('_method'));
 app.use(cookieParser());
 app.use(session({
     secret: "Shh, its a secret!",
-    saveUninitialized: false,
+    cookie: {maxAge:60000},
+    saveUninitialized: true,
     resave: false,
 }));
 app.use(flash());
